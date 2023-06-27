@@ -59,42 +59,42 @@ r = reaper
 function msg(A)
 	r.ShowConsoleMsg(A)
 end
-dofile(reaper.GetResourcePath() .. "/Scripts/ReaTeam Extensions/API/imgui.lua")("0.6")
+dofile(r.GetResourcePath() .. "/Scripts/ReaTeam Extensions/API/imgui.lua")("0.6")
 
 UserOS = r.GetOS()
 if UserOS == "OSX32" or UserOS == "OSX64" or UserOS == "macOS-arm64" then
-	Invisi_Cursor = reaper.JS_Mouse_LoadCursorFromFile(r.GetResourcePath() .. "/Cursors/Empty Cursor.cur")
+	Invisi_Cursor = r.JS_Mouse_LoadCursorFromFile(r.GetResourcePath() .. "/Cursors/Empty Cursor.cur")
 end
-mx, my = reaper.GetMousePosition()
-window = reaper.JS_Window_FromPoint(mx, my)
-release_time = reaper.time_precise() + 3.0 -- hide/freeze mouse for 3 secs.
+mx, my = r.GetMousePosition()
+window = r.JS_Window_FromPoint(mx, my)
+release_time = r.time_precise() + 3.0 -- hide/freeze mouse for 3 secs.
 
 function Loop()
-	if reaper.time_precise() < release_time then
-		reaper.JS_Mouse_SetPosition(mx, my)
-		reaper.JS_Mouse_SetCursor(reaper.JS_Mouse_LoadCursor(Invisi_Cursor))
+	if r.time_precise() < release_time then
+		r.JS_Mouse_SetPosition(mx, my)
+		r.JS_Mouse_SetCursor(r.JS_Mouse_LoadCursor(Invisi_Cursor))
 
-		reaper.defer(Loop)
+		r.defer(Loop)
 	else
-		reaper.JS_WindowMessage_Release(window, "WM_SETCURSOR")
+		r.JS_WindowMessage_Release(window, "WM_SETCURSOR")
 	end
 end
-reaper.JS_WindowMessage_Intercept(window, "WM_SETCURSOR", false)
-release_time = reaper.time_precise() + 3.0
+r.JS_WindowMessage_Intercept(window, "WM_SETCURSOR", false)
+release_time = r.time_precise() + 3.0
 --[[  Loop() ]]
 
 function MouseCursorBusy(enable, title)
-	mx, my = reaper.GetMousePosition()
+	mx, my = r.GetMousePosition()
 
-	local hwnd = reaper.JS_Window_FindTop(title, true)
-	-- local hwnd = reaper.JS_Window_FromPoint(mx, my)
+	local hwnd = r.JS_Window_FindTop(title, true)
+	-- local hwnd = r.JS_Window_FromPoint(mx, my)
 
 	if enable then -- set cursor to hourglass
-		reaper.JS_Mouse_SetCursor(Invisi_Cursor)
+		r.JS_Mouse_SetCursor(Invisi_Cursor)
 		-- block app from changing mouse cursor
-		reaper.JS_WindowMessage_Intercept(hwnd, "WM_SETCURSOR", false)
+		r.JS_WindowMessage_Intercept(hwnd, "WM_SETCURSOR", false)
 	else -- set cursor to arrow
-		reaper.JS_Mouse_SetCursor(reaper.JS_Mouse_LoadCursor(32512))
+		r.JS_Mouse_SetCursor(r.JS_Mouse_LoadCursor(32512))
 		-- allow app to change mouse cursor
 	end
 end
@@ -128,11 +128,11 @@ function ConcatPath(...)
 	return table.concat({ ... }, sep)
 end
 
---[[     local dir_path = ConcatPath(reaper.GetResourcePath(), 'Scripts', 'FX Devices', 'FX Layouts')
+--[[     local dir_path = ConcatPath(r.GetResourcePath(), 'Scripts', 'FX Devices', 'FX Layouts')
 
     
     -- Create directory for file if it doesn't exist
-    reaper.RecursiveCreateDirectory(dir_path, 0)
+    r.RecursiveCreateDirectory(dir_path, 0)
  ]]
 
 ----------- Custom Colors-------------------
@@ -1419,9 +1419,9 @@ end
 
 Sel_Track = r.GetSelectedTrack(0, 0)
 if Sel_Track ~= nil then
-	Sel_Track_FX_Count = reaper.TrackFX_GetCount(Sel_Track)
+	Sel_Track_FX_Count = r.TrackFX_GetCount(Sel_Track)
 end
-NumOfTotalTracks = reaper.CountTracks(0)
+NumOfTotalTracks = r.CountTracks(0)
 FX_DeviceWindow_NoScroll = 0
 FXGUID = {}
 FirstLoop = true
@@ -1468,23 +1468,23 @@ EightColors = {
 	bgWhenAsgnModHvr = {},
 }
 for a = 1, 8, 1 do
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.25, 0.33, 0.25)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.25, 0.33, 0.25)
 	table.insert(EightColors.LowSat, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.25, 0.33, 0.5)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.25, 0.33, 0.5)
 	table.insert(EightColors.LowMidSat, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.5, 0.5, 0.5)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 0.5, 0.5, 0.5)
 	table.insert(EightColors.MidSat, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 0.5, 0.2)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 0.5, 0.2)
 	table.insert(EightColors.Bright, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 1, 0.9)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 1, 0.9)
 	table.insert(EightColors.Bright_HighSat, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 0.5, 0.5)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 1), 1, 0.5, 0.5)
 	table.insert(EightColors.HighSat_MidBright, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 0.7, 0.6, 0.15)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 0.7, 0.6, 0.15)
 	table.insert(EightColors.bgWhenAsgnMod, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 0.8, 0.7, 0.9)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 0.8, 0.7, 0.9)
 	table.insert(EightColors.bgWhenAsgnModAct, colors)
-	colors = reaper.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 1, 0.2, 0.5)
+	colors = r.ImGui_ColorConvertHSVtoRGB(0.08 * (a - 0.7), 1, 0.2, 0.5)
 	table.insert(EightColors.bgWhenAsgnModHvr, colors)
 end
 -----end of colors--------
@@ -1504,11 +1504,11 @@ Cont_Param_Add_Mode = false
 Array = {}
 
 function AddMacroJSFX()
-	local MacroGetLT_Track = reaper.GetLastTouchedTrack()
-	MacrosJSFXExist = reaper.TrackFX_AddByName(MacroGetLT_Track, "FXD Macros", 0, 0)
+	local MacroGetLT_Track = r.GetLastTouchedTrack()
+	MacrosJSFXExist = r.TrackFX_AddByName(MacroGetLT_Track, "FXD Macros", 0, 0)
 	if MacrosJSFXExist == -1 then
-		reaper.TrackFX_AddByName(MacroGetLT_Track, "FXD Macros", 0, -1000)
-		reaper.TrackFX_Show(MacroGetLT_Track, 0, 2)
+		r.TrackFX_AddByName(MacroGetLT_Track, "FXD Macros", 0, -1000)
+		r.TrackFX_Show(MacroGetLT_Track, 0, 2)
 		return false
 	else
 		return true
@@ -1516,19 +1516,19 @@ function AddMacroJSFX()
 end
 
 function GetLTParam()
-	LT_Track = reaper.GetLastTouchedTrack()
-	retval, LT_Prm_TrackNum, LT_FXNum, LT_ParamNum = reaper.GetLastTouchedFX()
-	--GetTrack_LT_Track = reaper.GetTrack(0,LT_TrackNum)
+	LT_Track = r.GetLastTouchedTrack()
+	retval, LT_Prm_TrackNum, LT_FXNum, LT_ParamNum = r.GetLastTouchedFX()
+	--GetTrack_LT_Track = r.GetTrack(0,LT_TrackNum)
 	if LT_Track ~= nil then
-		retval, LT_FXName = reaper.TrackFX_GetFXName(LT_Track, LT_FXNum)
-		retval, LT_ParamName = reaper.TrackFX_GetParamName(LT_Track, LT_FXNum, LT_ParamNum)
+		retval, LT_FXName = r.TrackFX_GetFXName(LT_Track, LT_FXNum)
+		retval, LT_ParamName = r.TrackFX_GetParamName(LT_Track, LT_FXNum, LT_ParamNum)
 	end
 end
 
 --AddMacroJSFX()
 
 function GetLT_FX_Num()
-	retval, LT_Prm_TrackNum, LT_FX_Number, LT_ParamNum = reaper.GetLastTouchedFX()
+	retval, LT_Prm_TrackNum, LT_FX_Number, LT_ParamNum = r.GetLastTouchedFX()
 	LT_Track = r.GetLastTouchedTrack()
 end
 
@@ -1541,17 +1541,17 @@ end
 GetLTParam()
 
 local ctx = r.ImGui_CreateContext("FX Device", r.ImGui_ConfigFlags_DockingEnable())
-dofile(reaper.GetResourcePath() .. "/UserPlugins/ultraschall_api.lua")
+dofile(r.GetResourcePath() .. "/UserPlugins/ultraschall_api.lua")
 
-Show_H_ScrollBar = reaper.ImGui_WindowFlags_HorizontalScrollbar()
-AlwaysHScroll = reaper.ImGui_WindowFlags_AlwaysHorizontalScrollbar()
+Show_H_ScrollBar = r.ImGui_WindowFlags_HorizontalScrollbar()
+AlwaysHScroll = r.ImGui_WindowFlags_AlwaysHorizontalScrollbar()
 
 --[[  function Link_LT_Param(TrackNumToBeMod, FX_Slt_Indx_ToBeMod, parmlink, PARMLINK_LINKEDPLUGIN,PARMLINK_LINKEDPARMIDX,PARAM_NR, PARMLINK_OFFSET, PARMLINK_SCALE,PARAMOD_BASELINE)
         -- let's create a default ParmModTable
         ParmModTable = ultraschall.CreateDefaultParmModTable()
         
         -- let's activate LFO; in the default ParmModTable, all LFO_-entries are set 
-        -- to Reaper's default already, so setting them isn't necessary in this case
+        -- to r's default already, so setting them isn't necessary in this case
         
         ParmModTable["PARMLINK"]=parmlink
         ParmModTable["PARMLINK_LINKEDPLUGIN"]=PARMLINK_LINKEDPLUGIN   --Always link to 1st plugin(Bryan's Macro)
@@ -1821,9 +1821,9 @@ function MyText(text, font, color, WrapPosX)
 		r.ImGui_PushFont(ctx, font)
 	end
 	if color then
-		reaper.ImGui_TextColored(ctx, color, text)
+		r.ImGui_TextColored(ctx, color, text)
 	else
-		reaper.ImGui_Text(ctx, text)
+		r.ImGui_Text(ctx, text)
 	end
 
 	if font then
@@ -2114,10 +2114,10 @@ function MakeItemEditable(FxGUID, Fx_P, ItemWidth, ItemType, PosX, PosY)
 end
 function SaveLayoutEditings(FX_Name, ID, FxGUID)
 	local dir_path =
-		ConcatPath(reaper.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices", "FX Layouts")
+		ConcatPath(r.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices", "FX Layouts")
 	local FX_Name = ChangeFX_Name(FX_Name)
 	local file_path = ConcatPath(dir_path, FX_Name .. ".ini")
-	reaper.RecursiveCreateDirectory(dir_path, 0)
+	r.RecursiveCreateDirectory(dir_path, 0)
 
 	local file = io.open(file_path, "w")
 	if file then
@@ -2657,7 +2657,7 @@ function AddCombo(
 			-----Style--------
 
 			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Header(), 0x44444433)
-			local AccentClr = reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_SliderGrabActive())
+			local AccentClr = r.ImGui_GetColor(ctx, r.ImGui_Col_SliderGrabActive())
 			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_HeaderHovered(), AccentClr)
 			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), 0xbbbbbbff)
 			if Style == "Pro C 2" then
@@ -2713,7 +2713,7 @@ function AddCombo(
 
 			local L, T = r.ImGui_GetItemRectMin(ctx)
 			local R, B = r.ImGui_GetItemRectMax(ctx)
-			local lineheight = reaper.ImGui_GetTextLineHeight(ctx)
+			local lineheight = r.ImGui_GetTextLineHeight(ctx)
 			local drawlist = r.ImGui_GetForegroundDrawList(ctx)
 
 			r.ImGui_DrawList_AddRectFilled(drawlist, L, T + lineheight / 8, R, B - lineheight / 8, 0x88888844, Rounding)
@@ -2732,7 +2732,7 @@ function AddCombo(
 
 	if Style == "up-down arrow" then
 		local R, B = r.ImGui_GetItemRectMax(ctx)
-		local lineheight = reaper.ImGui_GetTextLineHeight(ctx)
+		local lineheight = r.ImGui_GetTextLineHeight(ctx)
 		local drawlist = r.ImGui_GetWindowDrawList(ctx)
 		local m = B - lineheight / 2 - 3
 		g = 2
@@ -2883,7 +2883,7 @@ function DropFXtoLayerNoMove(FXGUID_RackMixer, LayerNum, DragFX_ID)
 	if Lyr.FX_Ins[FXGUID_RackMixer] == nil then
 		Lyr.FX_Ins[FXGUID_RackMixer] = 0
 	end
-	local guid = reaper.TrackFX_GetFXGUID(LT_Track, DragFX_ID)
+	local guid = r.TrackFX_GetFXGUID(LT_Track, DragFX_ID)
 
 	if FX.InLyr[guid] ~= FXGUID_RackMixer then
 		Lyr.FX_Ins[FXGUID_RackMixer] = Lyr.FX_Ins[FXGUID_RackMixer] + 1
@@ -2903,12 +2903,12 @@ function DropFXtoLayerNoMove(FXGUID_RackMixer, LayerNum, DragFX_ID)
 
 	r.SetProjExtState(0, "FX Devices", "FX Inst in Layer" .. FXGUID_RackMixer, Lyr.FX_Ins[FXGUID_RackMixer])
 	for i = 1, RepeatTimeForWindows, 1 do
-		local FXGUID = reaper.TrackFX_GetFXGUID(LT_Track, i)
+		local FXGUID = r.TrackFX_GetFXGUID(LT_Track, i)
 		if FX.LyrNum[FXGUID] == LayerNum and FX.InLyr[FXGUID] == FXGUID_RackMixer then
-			_, FXName = reaper.TrackFX_GetFXName(LT_Track, i)
+			_, FXName = r.TrackFX_GetFXName(LT_Track, i)
 			SetPinMappings(i)
 
-			local rv, inputPins, outputPins = reaper.TrackFX_GetIOSize(LT_Track, i)
+			local rv, inputPins, outputPins = r.TrackFX_GetIOSize(LT_Track, i)
 			if outputPins > 2 then
 				for P = 2, outputPins, 1 do
 					r.TrackFX_SetPinMappings(LT_Track, i, 1--[[IsOutput]], P, 0, 0)
@@ -2968,13 +2968,13 @@ function DropFXtoLayer(FX_Idx, LayerNum, AltDragSrc) --fxIdx == the position in 
 	MoveFX(DragFX_ID, FX_Idx, true)
 
 	--[[ for i=1,  RepeatTimeForWindows,1 do
-            local FXGUID = reaper.TrackFX_GetFXGUID( LT_Track, i )
+            local FXGUID = r.TrackFX_GetFXGUID( LT_Track, i )
             ]]
 	if FX.LyrNum[guid] == LayerNum and FX.InLyr[guid] == FXGUID_RackMixer then
 		local FX_Idx
 		--_, FXName  = r.TrackFX_GetFXName( LT_Track, i )
 		for i = 1, RepeatTimeForWindows, 1 do
-			local FXGUID = reaper.TrackFX_GetFXGUID(LT_Track, i)
+			local FXGUID = r.TrackFX_GetFXGUID(LT_Track, i)
 			if FXGUID == guid then
 				FX_Idx = i
 			end
@@ -2982,7 +2982,7 @@ function DropFXtoLayer(FX_Idx, LayerNum, AltDragSrc) --fxIdx == the position in 
 
 		SetPinMappings(DragFX_ID)
 
-		local rv, inputPins, outputPins = reaper.TrackFX_GetIOSize(LT_Track, DragFX_ID)
+		local rv, inputPins, outputPins = r.TrackFX_GetIOSize(LT_Track, DragFX_ID)
 		if outputPins > 2 then
 			for P = 2, outputPins, 1 do
 				r.TrackFX_SetPinMappings(LT_Track, DragFX_ID, 1--[[IsOutput]], P, 0, 0)
@@ -3028,7 +3028,7 @@ function FX_NAME(str, i)
 			vst_name = "VST:" .. nm:sub(0, nm:find("%.vst=") - 1)
 			vst_name = vst_name:gsub("_", " ")
 		elseif name_segment:find("%.vst.dylib=") then
-			local nm = name_segment -- Reaper Native plugins
+			local nm = name_segment -- r Native plugins
 			vst_name = "VST:" .. nm:sub(0, nm:find("%.vst.dylib=") - 1)
 		end
 	end
@@ -3052,16 +3052,16 @@ function Fill_fx_list()
 	local tbl_list = {}
 	local tbl = {}
 
-	local vst_path = r.GetResourcePath() .. "/reaper-vstplugins64.ini"
+	local vst_path = r.GetResourcePath() .. "/r-vstplugins64.ini"
 	local vst_str = GetFileContext(vst_path)
 
-	local vst_path32 = r.GetResourcePath() .. "/reaper-vstplugins.ini"
+	local vst_path32 = r.GetResourcePath() .. "/r-vstplugins.ini"
 	local vst_str32 = GetFileContext(vst_path32)
 
-	local jsfx_path = r.GetResourcePath() .. "/reaper-jsfx.ini"
+	local jsfx_path = r.GetResourcePath() .. "/r-jsfx.ini"
 	local jsfx_str = GetFileContext(jsfx_path)
 
-	local au_path = r.GetResourcePath() .. "/reaper-auplugins_arm64.ini"
+	local au_path = r.GetResourcePath() .. "/r-auplugins_arm64.ini"
 	local au_str = GetFileContext(au_path)
 
 	local plugins = vst_str .. vst_str32 .. jsfx_str .. au_str
@@ -3267,7 +3267,7 @@ local function frame()
 
 	-- DRAG AND DROP HERE
 	for i = 1, 5 do
-		reaper.ImGui_Selectable(ctx, "TRACK " .. i, false, nil, 50, size_hIn)
+		r.ImGui_Selectable(ctx, "TRACK " .. i, false, nil, 50, size_hIn)
 		drop(i)
 	end
 end
@@ -3275,20 +3275,20 @@ end
 FX_LIST = Fill_fx_list()
 -------- End Of FX List
 
-Font_Andale_Mono = reaper.ImGui_CreateFont("andale mono", 13)
+Font_Andale_Mono = r.ImGui_CreateFont("andale mono", 13)
 Font_Andale_Mono_6 = r.ImGui_CreateFont("andale mono", 6)
 Font_Andale_Mono_7 = r.ImGui_CreateFont("andale mono", 7)
-Font_Andale_Mono_8 = reaper.ImGui_CreateFont("andale mono", 8)
+Font_Andale_Mono_8 = r.ImGui_CreateFont("andale mono", 8)
 Font_Andale_Mono_9 = r.ImGui_CreateFont("andale mono", 9)
-Font_Andale_Mono_10 = reaper.ImGui_CreateFont("andale mono", 10)
-Font_Andale_Mono_11 = reaper.ImGui_CreateFont("andale mono", 11)
+Font_Andale_Mono_10 = r.ImGui_CreateFont("andale mono", 10)
+Font_Andale_Mono_11 = r.ImGui_CreateFont("andale mono", 11)
 Font_Andale_Mono_12 = r.ImGui_CreateFont("andale mono", 12)
 Font_Andale_Mono_13 = r.ImGui_CreateFont("andale mono", 13)
 Font_Andale_Mono_14 = r.ImGui_CreateFont("andale mono", 14)
 Font_Andale_Mono_15 = r.ImGui_CreateFont("andale mono", 15)
 Font_Andale_Mono_16 = r.ImGui_CreateFont("andale mono", 16)
-Font_Andale_Mono_20_B = reaper.ImGui_CreateFont("andale mono", 20, r.ImGui_FontFlags_Bold())
-Font_Andale_Mono_20 = reaper.ImGui_CreateFont("andale mono", 20)
+Font_Andale_Mono_20_B = r.ImGui_CreateFont("andale mono", 20, r.ImGui_FontFlags_Bold())
+Font_Andale_Mono_20 = r.ImGui_CreateFont("andale mono", 20)
 
 local script_folder = select(2, r.get_action_context()):match("^(.+)[\\//]")
 script_folder = script_folder .. "/BryanChi_FX Devices"
@@ -3350,19 +3350,19 @@ r.ImGui_AttachFont(ctx, Arial)
 --r.ImGui_SetNextWindowDockID(ctx, -1)   ---Dock the script
 function ImageAngle(ctx, img, angle, w, h, x, y)
 	if not x and not y then
-		x, y = reaper.ImGui_GetCursorScreenPos(ctx)
+		x, y = r.ImGui_GetCursorScreenPos(ctx)
 	end
 	local cx, cy = x + (w / 2), y + (h / 2)
 	local rotate = function(x, y)
 		x, y = x - cx, y - cy
 		return (x * math.cos(angle) - y * math.sin(angle)) + cx, (x * math.sin(angle) + y * math.cos(angle)) + cy
 	end
-	local dl = reaper.ImGui_GetWindowDrawList(ctx)
+	local dl = r.ImGui_GetWindowDrawList(ctx)
 	local p1_x, p1_y = rotate(x, y)
 	local p2_x, p2_y = rotate(x + w, y)
 	local p3_x, p3_y = rotate(x + w, y + h)
 	local p4_x, p4_y = rotate(x, y + h)
-	reaper.ImGui_DrawList_AddImageQuad(dl, img, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, p4_x, p4_y)
+	r.ImGui_DrawList_AddImageQuad(dl, img, p1_x, p1_y, p2_x, p2_y, p3_x, p3_y, p4_x, p4_y)
 	--r.ImGui_Dummy(ctx, w, h)
 end
 
@@ -3489,13 +3489,13 @@ function IfTryingToAddExistingPrm(Fx_P, FxGUID, Shape, L, T, R, B, Rad)
 			if Shape == "Circle" then
 				r.ImGui_DrawList_AddCircleFilled(FX.DL, L, T, Rad, 0x99999950)
 			elseif Shape == "Rect" then
-				local L, T = reaper.ImGui_GetItemRectMin(ctx)
+				local L, T = r.ImGui_GetItemRectMin(ctx)
 				r.ImGui_DrawList_AddRectFilled(FX.DL, L, T, R, B, 0x99999977, Rounding)
 			end
 		end
 	end
 	if Fx_P .. FxGUID == TryingToAddExistingPrm_Cont then
-		local L, T = reaper.ImGui_GetItemRectMin(ctx)
+		local L, T = r.ImGui_GetItemRectMin(ctx)
 		if Shape == "Circle" then
 			r.ImGui_DrawList_AddCircleFilled(FX.DL, L, T, Rad, 0x99999950)
 		elseif Shape == "Rect" then
@@ -3696,11 +3696,11 @@ function AddKnob(
 		p_value = r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, P_Num)
 	end
 
-	local line_height = reaper.ImGui_GetTextLineHeight(ctx)
-	local draw_list = reaper.ImGui_GetWindowDrawList(ctx)
+	local line_height = r.ImGui_GetTextLineHeight(ctx)
+	local draw_list = r.ImGui_GetWindowDrawList(ctx)
 	local item_inner_spacing = { item_inner_spacing, item_inner_spacing }
-		or { { reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_ItemInnerSpacing()) } }
-	local mouse_delta = { reaper.ImGui_GetMouseDelta(ctx) }
+		or { { r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_ItemInnerSpacing()) } }
+	local mouse_delta = { r.ImGui_GetMouseDelta(ctx) }
 	local F_Tp = FX.Prm.ToTrkPrm[FxGUID .. Fx_P] or 0
 
 	local ANGLE_MIN = 3.141592 * 0.75
@@ -3763,8 +3763,8 @@ function AddKnob(
 	end
 
 	local value_changed = false
-	local is_active = reaper.ImGui_IsItemActive(ctx)
-	local is_hovered = reaper.ImGui_IsItemHovered(ctx)
+	local is_active = r.ImGui_IsItemActive(ctx)
+	local is_hovered = r.ImGui_IsItemHovered(ctx)
 	if (is_hovered or Tweaking == P_Num .. FxGUID) and (V_Pos == "None" or not V_Pos) then
 		local get, PV = r.TrackFX_GetFormattedParamValue(LT_Track, FX_Idx, P_Num)
 		if get then
@@ -3821,7 +3821,7 @@ function AddKnob(
 	local angle_cos, angle_sin = math.cos(angle), math.sin(angle)
 	local radius_inner = radius_outer * 0.40
 
-	local ClrBg = reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_FrameBg())
+	local ClrBg = r.ImGui_GetColor(ctx, r.ImGui_Col_FrameBg())
 	if Style == "Pro C" then
 		local offset
 		local TxtClr = 0xD9D9D9ff
@@ -3831,14 +3831,14 @@ function AddKnob(
 			offset = nil
 		end
 
-		reaper.ImGui_DrawList_AddCircleFilled(
+		r.ImGui_DrawList_AddCircleFilled(
 			draw_list,
 			center[1],
 			center[2],
 			radius_outer,
 			FX[FxGUID][Fx_P].BgClr or 0xC7A47399
 		)
-		reaper.ImGui_DrawList_AddLine(
+		r.ImGui_DrawList_AddLine(
 			draw_list,
 			center[1] + angle_cos * radius_inner,
 			center[2] + angle_sin * radius_inner,
@@ -3847,7 +3847,7 @@ function AddKnob(
 			FX[FxGUID][Fx_P].GrbClr or 0xDBDBDBff,
 			FX[FxGUID][Fx_P].Value_Thick or 2.0
 		)
-		local TextW, h = reaper.ImGui_CalcTextSize(ctx, labeltoShow, nil, nil, true)
+		local TextW, h = r.ImGui_CalcTextSize(ctx, labeltoShow, nil, nil, true)
 		if Disabled == "Pro C Ratio Disabled" then
 			local CompStyle = "CompStyle##Value"
 			if _G[CompStyle] == "Vocal" then
@@ -3864,7 +3864,7 @@ function AddKnob(
 
 		local function AutoBtn(Label, offset, Rect_offset)
 			if labeltoShow == Label then
-				MouseX, MouseY = reaper.ImGui_GetMousePos(ctx)
+				MouseX, MouseY = r.ImGui_GetMousePos(ctx)
 				r.ImGui_DrawList_AddText(
 					draw_list,
 					center[1] - TextW / 2 + (offset or 0),
@@ -4017,9 +4017,9 @@ function AddKnob(
 			radius_inner,
 			r.ImGui_GetColor(
 				ctx,
-				is_active and reaper.ImGui_Col_FrameBgActive()
-					or is_hovered and reaper.ImGui_Col_FrameBgHovered()
-					or reaper.ImGui_Col_FrameBg()
+				is_active and r.ImGui_Col_FrameBgActive()
+					or is_hovered and r.ImGui_Col_FrameBgHovered()
+					or r.ImGui_Col_FrameBg()
 			),
 			16
 		)
@@ -4054,11 +4054,11 @@ function AddKnob(
 			center[1],
 			center[2],
 			radius_inner,
-			reaper.ImGui_GetColor(
+			r.ImGui_GetColor(
 				ctx,
-				is_active and reaper.ImGui_Col_FrameBgActive()
-					or is_hovered and reaper.ImGui_Col_FrameBgHovered()
-					or reaper.ImGui_Col_FrameBg()
+				is_active and r.ImGui_Col_FrameBgActive()
+					or is_hovered and r.ImGui_Col_FrameBgHovered()
+					or r.ImGui_Col_FrameBg()
 			)
 		)
 	end
@@ -4291,7 +4291,7 @@ function AddKnob(
 	end
 
 	if AssigningMacro ~= nil then
-		reaper.ImGui_DrawList_AddCircleFilled(
+		r.ImGui_DrawList_AddCircleFilled(
 			draw_list,
 			center[1],
 			center[2],
@@ -4312,7 +4312,7 @@ function AddKnob(
 		r.ImGui_DrawList_AddCircle(draw_list, center[1], center[2], radius_outer, 0xffffffff, 16)
 		for m = 1, 8, 1 do
 			if AssigningMacro == m then
-				reaper.ImGui_PopStyleColor(ctx, 2)
+				r.ImGui_PopStyleColor(ctx, 2)
 			end
 		end
 	end
@@ -4358,7 +4358,7 @@ function AddKnob(
 					angle,
 					SetMinMax(angle + (ANGLE_MAX - ANGLE_MIN) * FP.ModAMT[Macro], ANGLE_MIN, ANGLE_MAX)
 				)
-				reaper.ImGui_DrawList_PathStroke(
+				r.ImGui_DrawList_PathStroke(
 					draw_list,
 					EightColors.HighSat_MidBright[Macro],
 					nil,
@@ -4393,7 +4393,7 @@ function AddKnob(
 			angle,
 			angle + (ANGLE_MAX - ANGLE_MIN) * FP.ModAMT[M]
 		)
-		reaper.ImGui_DrawList_PathStroke(
+		r.ImGui_DrawList_PathStroke(
 			draw_list,
 			EightColors.bgWhenAsgnModAct[AssigningMacro],
 			nil,
@@ -4428,19 +4428,19 @@ end
 function Add_WetDryKnob(ctx, label, labeltoShow, p_value, v_min, v_max, FX_Idx)
 	r.ImGui_SetNextItemWidth(ctx, 40)
 	local radius_outer = 10
-	local pos = { reaper.ImGui_GetCursorScreenPos(ctx) }
+	local pos = { r.ImGui_GetCursorScreenPos(ctx) }
 	local center = { pos[1] + radius_outer, pos[2] + radius_outer }
 	local CircleClr
-	local line_height = reaper.ImGui_GetTextLineHeight(ctx)
-	local draw_list = reaper.ImGui_GetWindowDrawList(ctx)
-	local item_inner_spacing = { reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_ItemInnerSpacing()) }
-	local mouse_delta = { reaper.ImGui_GetMouseDelta(ctx) }
+	local line_height = r.ImGui_GetTextLineHeight(ctx)
+	local draw_list = r.ImGui_GetWindowDrawList(ctx)
+	local item_inner_spacing = { r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_ItemInnerSpacing()) }
+	local mouse_delta = { r.ImGui_GetMouseDelta(ctx) }
 
 	local ANGLE_MIN = 3.141592 * 0.75
 	local ANGLE_MAX = 3.141592 * 2.25
 	local FxGUID = FXGUID[FX_Idx]
 
-	reaper.ImGui_InvisibleButton(
+	r.ImGui_InvisibleButton(
 		ctx,
 		label,
 		radius_outer * 2,
@@ -4448,8 +4448,8 @@ function Add_WetDryKnob(ctx, label, labeltoShow, p_value, v_min, v_max, FX_Idx)
 	)
 
 	local value_changed = false
-	local is_active = reaper.ImGui_IsItemActive(ctx)
-	local is_hovered = reaper.ImGui_IsItemHovered(ctx)
+	local is_active = r.ImGui_IsItemActive(ctx)
+	local is_hovered = r.ImGui_IsItemHovered(ctx)
 
 	if is_active and mouse_delta[2] ~= 0.0 and FX[FxGUID].DeltaP_V ~= 1 then
 		local step = (v_max - v_min) / 200.0
@@ -4495,10 +4495,10 @@ function Add_WetDryKnob(ctx, label, labeltoShow, p_value, v_min, v_max, FX_Idx)
 		local P = Total_P - 1
 		local DeltaV = r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, P)
 		if DeltaV == 1 then
-			reaper.TrackFX_SetParamNormalized(LT_Track, FX_Idx, P, 0)
+			r.TrackFX_SetParamNormalized(LT_Track, FX_Idx, P, 0)
 			FX[FxGUID].DeltaP_V = 0
 		else
-			reaper.TrackFX_SetParamNormalized(LT_Track, FX_Idx, P, 1)
+			r.TrackFX_SetParamNormalized(LT_Track, FX_Idx, P, 1)
 			FX[FxGUID].DeltaP_V = 1
 		end
 		FX[FxGUID].DeltaP = P
@@ -4519,7 +4519,7 @@ function Add_WetDryKnob(ctx, label, labeltoShow, p_value, v_min, v_max, FX_Idx)
 			draw_list,
 			pos[1],
 			pos[2] + radius_outer * 2 + item_inner_spacing[2],
-			reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_Text()),
+			r.ImGui_GetColor(ctx, r.ImGui_Col_Text()),
 			labeltoShow
 		)
 	else
@@ -4544,19 +4544,19 @@ function Add_WetDryKnob(ctx, label, labeltoShow, p_value, v_min, v_max, FX_Idx)
 	end
 
 	if is_active or is_hovered and FX[FxGUID].DeltaP_V ~= 1 then
-		local window_padding = { reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_WindowPadding()) }
-		reaper.ImGui_SetNextWindowPos(
+		local window_padding = { r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_WindowPadding()) }
+		r.ImGui_SetNextWindowPos(
 			ctx,
 			pos[1] - window_padding[1],
 			pos[2] - line_height - item_inner_spacing[2] - window_padding[2] - 8
 		)
-		reaper.ImGui_BeginTooltip(ctx)
+		r.ImGui_BeginTooltip(ctx)
 		if Mods == Shift then
 			r.ImGui_Text(ctx, ("%.1f"):format(p_value * 100) .. "%")
 		else
 			r.ImGui_Text(ctx, ("%.0f"):format(p_value * 100) .. "%" --[[ ('%.3f'):format(p_value) ]])
 		end
-		reaper.ImGui_EndTooltip(ctx)
+		r.ImGui_EndTooltip(ctx)
 	end
 	if is_hovered then
 		HintMessage = "Alt+Right-Click = Delta-Solo"
@@ -4589,10 +4589,10 @@ function AddSlider(
 	local ClrPop = 0
 	local pos = { r.ImGui_GetCursorScreenPos(ctx) }
 
-	local line_height = reaper.ImGui_GetTextLineHeight(ctx)
-	local draw_list = reaper.ImGui_GetWindowDrawList(ctx)
+	local line_height = r.ImGui_GetTextLineHeight(ctx)
+	local draw_list = r.ImGui_GetWindowDrawList(ctx)
 
-	local mouse_delta = { reaper.ImGui_GetMouseDelta(ctx) }
+	local mouse_delta = { r.ImGui_GetMouseDelta(ctx) }
 	local FxGUID = FXGUID[FX_Idx]
 	local F_Tp = FX.Prm.ToTrkPrm[FxGUID .. Fx_P] or 0
 
@@ -4636,12 +4636,12 @@ function AddSlider(
 			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), 0x99999922)
 			ClrPop = 3
 		elseif FX[FxGUID][Fx_P].BgClr and SliderStyle == nil then
-			r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), FX[FxGUID][Fx_P].BgClr)
-			r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgHovered(), FX[FxGUID][Fx_P].BgClrHvr)
-			r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgActive(), FX[FxGUID][Fx_P].BgClrAct)
+			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), FX[FxGUID][Fx_P].BgClr)
+			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), FX[FxGUID][Fx_P].BgClrHvr)
+			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgActive(), FX[FxGUID][Fx_P].BgClrAct)
 			ClrPop = 3
 		else
-			ClrPop = 0 --r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), 0x474747ff) ClrPop =1
+			ClrPop = 0 --r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), 0x474747ff) ClrPop =1
 		end
 		if GrabSize then
 			r.ImGui_PushStyleVar(ctx, r.ImGui_StyleVar_GrabMinSize(), GrabSize)
@@ -4703,8 +4703,8 @@ function AddSlider(
 		PosR, PosB = r.ImGui_GetItemRectMax(ctx)
 
 		local value_changed = false
-		local is_active = reaper.ImGui_IsItemActive(ctx)
-		local is_hovered = reaper.ImGui_IsItemHovered(ctx)
+		local is_active = r.ImGui_IsItemActive(ctx)
+		local is_hovered = r.ImGui_IsItemHovered(ctx)
 		if is_active == true then
 			Knob_Active = true
 		end
@@ -4753,15 +4753,15 @@ function AddSlider(
 		end
 		local t = (p_value - v_min) / (v_max - v_min)
 
-		local Clr_SldrGrab = r.ImGui_GetColor(ctx, reaper.ImGui_Col_SliderGrabActive())
-		local ClrBg = reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_FrameBg())
+		local Clr_SldrGrab = r.ImGui_GetColor(ctx, r.ImGui_Col_SliderGrabActive())
+		local ClrBg = r.ImGui_GetColor(ctx, r.ImGui_Col_FrameBg())
 
 		--[[ if is_active or is_hovered then
-            local window_padding = {reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_WindowPadding())}
-            reaper.ImGui_SetNextWindowPos(ctx, pos[1] - window_padding[1], pos[2] - line_height - item_inner_spacing[2] - window_padding[2])
-            reaper.ImGui_BeginTooltip(ctx)
-            reaper.ImGui_Text(ctx, ('%.3f'):format(p_value))
-            reaper.ImGui_EndTooltip(ctx)
+            local window_padding = {r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_WindowPadding())}
+            r.ImGui_SetNextWindowPos(ctx, pos[1] - window_padding[1], pos[2] - line_height - item_inner_spacing[2] - window_padding[2])
+            r.ImGui_BeginTooltip(ctx)
+            r.ImGui_Text(ctx, ('%.3f'):format(p_value))
+            r.ImGui_EndTooltip(ctx)
             end ]]
 
 		--if user turn knob on ImGui
@@ -4773,7 +4773,7 @@ function AddSlider(
 			local getSlider, P_Value = r.TrackFX_GetFormattedParamValue(LT_Track, FX_Idx, P_Num)
 			---!!! ONLY ACTIVATE TOOLTIP IF VALUE IS HIDDEN
 			--[[ if getSlider  then 
-                    local window_padding = {reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_WindowPadding())}
+                    local window_padding = {r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_WindowPadding())}
                     r.ImGui_SetNextWindowPos(ctx, pos[1] - window_padding[1], pos[2] - line_height - window_padding[2] -8)
                     r.ImGui_BeginTooltip(ctx)
                     r.ImGui_Text(ctx, P_Value)
@@ -4788,7 +4788,7 @@ function AddSlider(
 		end
 
 		if AssigningMacro ~= nil then
-			reaper.ImGui_DrawList_AddRectFilled(
+			r.ImGui_DrawList_AddRectFilled(
 				draw_list,
 				PosL,
 				PosT,
@@ -4803,12 +4803,12 @@ function AddSlider(
 		if LT_ParamNum == P_Num and focusedFXState == 1 and LT_FXGUID == FxGUID and not FP.WhichCC then
 			FP.V = LT_ParamValue
 
-			reaper.ImGui_DrawList_AddRectFilled(draw_list, PosL, PosT, PosR, PosB, 0x99999922, Rounding)
-			reaper.ImGui_DrawList_AddRect(draw_list, PosL, PosT, PosR, PosB, 0x99999966, Rounding)
+			r.ImGui_DrawList_AddRectFilled(draw_list, PosL, PosT, PosR, PosB, 0x99999922, Rounding)
+			r.ImGui_DrawList_AddRect(draw_list, PosL, PosT, PosR, PosB, 0x99999966, Rounding)
 
 			for m = 1, 8, 1 do
 				if AssigningMacro == m then
-					reaper.ImGui_PopStyleColor(ctx, 2)
+					r.ImGui_PopStyleColor(ctx, 2)
 				end
 			end
 		end
@@ -5083,7 +5083,7 @@ function AddDrag(
 	local line_height = r.ImGui_GetTextLineHeight(ctx)
 	local draw_list = r.ImGui_GetWindowDrawList(ctx)
 
-	local mouse_delta = { reaper.ImGui_GetMouseDelta(ctx) }
+	local mouse_delta = { r.ImGui_GetMouseDelta(ctx) }
 	local F_Tp = FX.Prm.ToTrkPrm[FxGUID .. Fx_P]
 
 	local Font = "Font_Andale_Mono_" .. roundUp(FP.FontSize or LblTextSize or Knob_DefaultFontSize, 1)
@@ -5163,8 +5163,8 @@ function AddDrag(
 	local PosR, PosB = r.ImGui_GetItemRectMax(ctx)
 
 	local value_changed = false
-	local is_active = reaper.ImGui_IsItemActive(ctx)
-	local is_hovered = reaper.ImGui_IsItemHovered(ctx)
+	local is_active = r.ImGui_IsItemActive(ctx)
+	local is_hovered = r.ImGui_IsItemHovered(ctx)
 	if is_active == true then
 		Knob_Active = true
 	end
@@ -5397,8 +5397,8 @@ function AddDrag(
 	local t = (p_value - v_min) / (v_max - v_min)
 
 	local radius_inner = radius_outer * 0.40
-	local Clr_SldrGrab = r.ImGui_GetColor(ctx, reaper.ImGui_Col_SliderGrabActive())
-	local ClrBg = reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_FrameBg())
+	local Clr_SldrGrab = r.ImGui_GetColor(ctx, r.ImGui_Col_SliderGrabActive())
+	local ClrBg = r.ImGui_GetColor(ctx, r.ImGui_Col_FrameBg())
 
 	if
 		(is_active or is_hovered)
@@ -5406,7 +5406,7 @@ function AddDrag(
 	then
 		local getSldr, Param_Value = r.TrackFX_GetFormattedParamValue(LT_Track, FX_Idx, P_Num)
 
-		local window_padding = { reaper.ImGui_GetStyleVar(ctx, reaper.ImGui_StyleVar_WindowPadding()) }
+		local window_padding = { r.ImGui_GetStyleVar(ctx, r.ImGui_StyleVar_WindowPadding()) }
 		r.ImGui_SetNextWindowPos(ctx, pos[1] - window_padding[1], pos[2] - line_height - window_padding[2] - 8)
 
 		r.ImGui_BeginTooltip(ctx)
@@ -5426,7 +5426,7 @@ function AddDrag(
 	end
 
 	if AssigningMacro ~= nil then
-		reaper.ImGui_DrawList_AddRectFilled(
+		r.ImGui_DrawList_AddRectFilled(
 			draw_list,
 			PosL,
 			PosT,
@@ -5446,12 +5446,12 @@ function AddDrag(
 		and not FP.WhichCC
 	then
 		FX[FxGUID][Fx_P].V = LT_ParamValue
-		reaper.ImGui_DrawList_AddRectFilled(draw_list, PosL, PosT, PosR, PosB, 0x99999922, Rounding)
-		reaper.ImGui_DrawList_AddRect(draw_list, PosL, PosT, PosR, PosB, 0x99999966, Rounding)
+		r.ImGui_DrawList_AddRectFilled(draw_list, PosL, PosT, PosR, PosB, 0x99999922, Rounding)
+		r.ImGui_DrawList_AddRect(draw_list, PosL, PosT, PosR, PosB, 0x99999966, Rounding)
 
 		for m = 1, 8, 1 do
 			if AssigningMacro == m then
-				reaper.ImGui_PopStyleColor(ctx, 2)
+				r.ImGui_PopStyleColor(ctx, 2)
 			end
 		end
 	end
@@ -5481,7 +5481,7 @@ function AddDrag(
 
 	Tweaking = MakeModulationPossible(FxGUID, Fx_P, FX_Idx, P_Num, p_value, Sldr_Width)
 
-	local TextW, h = reaper.ImGui_CalcTextSize(ctx, labeltoShow, nil, nil, true)
+	local TextW, h = r.ImGui_CalcTextSize(ctx, labeltoShow, nil, nil, true)
 	local SldrR, SldrB = r.ImGui_GetItemRectMax(ctx)
 	local SldrL, SldrT = r.ImGui_GetItemRectMin(ctx)
 	local W, H = SldrR - SldrL, SldrB - SldrT
@@ -5490,7 +5490,7 @@ function AddDrag(
 	if FX[FxGUID][Fx_P].V_Round then
 		Format_P_V = RoundPrmV(Format_P_V, FX[FxGUID][Fx_P].V_Round)
 	end
-	TextW, Texth = reaper.ImGui_CalcTextSize(ctx, Format_P_V, nil, nil, true, -100)
+	TextW, Texth = r.ImGui_CalcTextSize(ctx, Format_P_V, nil, nil, true, -100)
 	if is_active then
 		txtclr = 0xEEEEEEff
 	else
@@ -5738,7 +5738,7 @@ function MakeModulationPossible(FxGUID, Fx_P, FX_Idx, P_Num, p_value, Sldr_Width
             Prm.SldrGrabXPos[Id]=(PosX_End_Of_Slider-Prm.Pos_L[Id])*p_value
             SliderCurPos=Prm.Pos_L[Id]+Prm.SldrGrabXPos[Id] ]]
 
-		local RightBtnDragX, RightBtnDragY = reaper.ImGui_GetMouseDragDelta(ctx, x, y, 1)
+		local RightBtnDragX, RightBtnDragY = r.ImGui_GetMouseDragDelta(ctx, x, y, 1)
 		local MouseDrag
 		if Vertical == "Vert" or Type == "knob" then
 			MouseDrag = -RightBtnDragY
@@ -5932,7 +5932,7 @@ function demo.PushStyle()
 		end
 	else
 		local file_path = ConcatPath(
-			reaper.GetResourcePath(),
+			r.GetResourcePath(),
 			"Scripts",
 			"ReaTeam Scripts",
 			"FX",
@@ -5969,7 +5969,7 @@ function demo.EachEnum(enum)
 		enum_cache = {}
 		cache[enum] = enum_cache
 
-		for func_name, func in pairs(reaper) do
+		for func_name, func in pairs(r) do
 			local enum_name = func_name:match(("^ImGui_%s_(.+)$"):format(enum))
 			if enum_name then
 				table.insert(enum_cache, { func(), enum_name })
@@ -5994,9 +5994,9 @@ function CallFile(mode, filename, folder)
 	local dir_path
 	if folder then
 		dir_path =
-			ConcatPath(reaper.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices", folder)
+			ConcatPath(r.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices", folder)
 	else
-		dir_path = ConcatPath(reaper.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices")
+		dir_path = ConcatPath(r.GetResourcePath(), "Scripts", "ReaTeam Scripts", "FX", "BryanChi_FX Devices")
 	end
 	local file_path = ConcatPath(dir_path, filename)
 
@@ -6182,7 +6182,7 @@ function ShowStyleEditor()
 				local pad = string.rep("\x20", name_maxlen - line[1]:len())
 				r.ImGui_LogText(
 					ctx,
-					("reaper.ImGui_Push%s(ctx, reaper.ImGui_%s_%s(),%s %s)\n"):format(
+					("r.ImGui_Push%s(ctx, r.ImGui_%s_%s(),%s %s)\n"):format(
 						funcSuffix,
 						enumName,
 						line[1],
@@ -6192,9 +6192,9 @@ function ShowStyleEditor()
 				)
 			end
 			if #lines == 1 then
-				r.ImGui_LogText(ctx, ("\nreaper.ImGui_Pop%s(ctx)\n"):format(funcSuffix))
+				r.ImGui_LogText(ctx, ("\nr.ImGui_Pop%s(ctx)\n"):format(funcSuffix))
 			elseif #lines > 1 then
-				r.ImGui_LogText(ctx, ("\nreaper.ImGui_Pop%s(ctx, %d)\n"):format(funcSuffix, #lines))
+				r.ImGui_LogText(ctx, ("\nr.ImGui_Pop%s(ctx, %d)\n"):format(funcSuffix, #lines))
 			end
 			r.ImGui_LogFinish(ctx)
 		end
@@ -6478,7 +6478,7 @@ function RetrieveFXsSavedLayout(Sel_Track_FX_Count)
 			--local file = CallFile('r', FX_Name..'.ini', 'FX Layouts')
 
 			local dir_path = ConcatPath(
-				reaper.GetResourcePath(),
+				r.GetResourcePath(),
 				"Scripts",
 				"ReaTeam Scripts",
 				"FX",
@@ -6699,7 +6699,7 @@ end
 
 -- Repeat for every track
 for Track_Idx = 0, NumOfTotalTracks - 1, 1 do
-	local Track = reaper.GetTrack(0, Track_Idx)
+	local Track = r.GetTrack(0, Track_Idx)
 	local TrkID = r.GetTrackGUID(Track)
 
 	Trk[TrkID] = Trk[TrkID] or {}
@@ -6737,7 +6737,7 @@ for Track_Idx = 0, NumOfTotalTracks - 1, 1 do
 		end
 	end
 
-	local FXCount = reaper.TrackFX_GetCount(Track)
+	local FXCount = r.TrackFX_GetCount(Track)
 	Trk[TrkID] = Trk[TrkID] or {}
 	Trk[TrkID].PreFX = Trk[TrkID].PreFX or {}
 	Trk[TrkID].PostFX = Trk[TrkID].PostFX or {}
@@ -7108,39 +7108,39 @@ function loop()
 	-- ImGUI Funcions-----------------------------------------------------------
 	----------------------------------------------------------------------------
 	function tooltip(A)
-		reaper.ImGui_BeginTooltip(ctx)
-		reaper.ImGui_SetTooltip(ctx, A)
-		reaper.ImGui_EndTooltip(ctx)
+		r.ImGui_BeginTooltip(ctx)
+		r.ImGui_SetTooltip(ctx, A)
+		r.ImGui_EndTooltip(ctx)
 	end
 
 	function HintToolTip(A)
-		reaper.ImGui_BeginTooltip(ctx)
-		reaper.ImGui_SetTooltip(ctx, A)
-		reaper.ImGui_EndTooltip(ctx)
+		r.ImGui_BeginTooltip(ctx)
+		r.ImGui_SetTooltip(ctx, A)
+		r.ImGui_EndTooltip(ctx)
 	end
 
 	function ttp(A)
-		reaper.ImGui_BeginTooltip(ctx)
-		reaper.ImGui_SetTooltip(ctx, A)
-		reaper.ImGui_EndTooltip(ctx)
+		r.ImGui_BeginTooltip(ctx)
+		r.ImGui_SetTooltip(ctx, A)
+		r.ImGui_EndTooltip(ctx)
 	end
 
 	function openFXwindow(LT_Track, FX_Idx)
 		FX.Win.FocusState = r.TrackFX_GetOpen(LT_Track, FX_Idx)
 		if FX.Win.FocusState == false then
-			reaper.TrackFX_Show(LT_Track, FX_Idx, 3)
+			r.TrackFX_Show(LT_Track, FX_Idx, 3)
 		elseif FX.Win.FocusState == true then
-			reaper.TrackFX_Show(LT_Track, FX_Idx, 2)
+			r.TrackFX_Show(LT_Track, FX_Idx, 2)
 		end
 	end
 
 	function ToggleBypassFX(LT_Track, FX_Idx)
 		FX.Enable = FX.Enable or {}
-		FX.Enable[FX_Idx] = reaper.TrackFX_GetEnabled(LT_Track, FX_Idx)
+		FX.Enable[FX_Idx] = r.TrackFX_GetEnabled(LT_Track, FX_Idx)
 		if FX.Enable[FX_Idx] == true then
-			reaper.TrackFX_SetEnabled(LT_Track, FX_Idx, false)
+			r.TrackFX_SetEnabled(LT_Track, FX_Idx, false)
 		elseif FX.Enable[FX_Idx] == false then
-			reaper.TrackFX_SetEnabled(LT_Track, FX_Idx, true)
+			r.TrackFX_SetEnabled(LT_Track, FX_Idx, true)
 		end
 	end
 
@@ -7408,7 +7408,7 @@ function loop()
 			--MouseCursorBusy(true , 'My Window')
 
 			if Mods == Alt then
-				reaper.JS_WindowMessage_Release(hwnd, "WM_SETCURSOR")
+				r.JS_WindowMessage_Release(hwnd, "WM_SETCURSOR")
 			end
 
 			--[[ r.ImGui_PushStyleColor(ctx,r.ImGui_Col_ButtonHovered(), Btns_Hover_DefaultColor)
@@ -7419,8 +7419,8 @@ function loop()
 
 			r.gmem_attach("ParamValues")
 			LT_FXGUID = r.TrackFX_GetFXGUID(LT_Track or r.GetTrack(0, 0), LT_FX_Number or 0)
-			TrkID = reaper.GetTrackGUID(LT_Track or r.GetTrack(0, 0))
-			Sel_Track_FX_Count = reaper.TrackFX_GetCount(LT_Track)
+			TrkID = r.GetTrackGUID(LT_Track or r.GetTrack(0, 0))
+			Sel_Track_FX_Count = r.TrackFX_GetCount(LT_Track)
 			LBtnDrag = r.ImGui_IsMouseDragging(ctx, 0)
 			LBtnDC = r.ImGui_IsMouseDoubleClicked(ctx, 0)
 
@@ -7438,9 +7438,9 @@ function loop()
 			-- if user switch selected track...
 			if TrkID ~= TrkID_End then
 				if TrkID_End ~= nil and TrkID ~= nil then
-					NumOfTotalTracks = reaper.CountTracks(0)
+					NumOfTotalTracks = r.CountTracks(0)
 					--[[  r.gmem_attach('TrackNameForMacro') 
-                    reaper .gmem_write(0,NumOfTotalTracks )]]
+                    r .gmem_write(0,NumOfTotalTracks )]]
 				end
 				for P = 1, Trk.Prm.Inst[TrkID] or 0, 1 do
 					for m = 1, 8, 1 do
@@ -7465,16 +7465,16 @@ function loop()
 			end
 			ImGUI_Time = ImGUI_Time + TimeEachFrame
 
-			Wheel_V, Wheel_H = reaper.ImGui_GetMouseWheel(ctx)
-			LT_Track = reaper.GetLastTouchedTrack()
+			Wheel_V, Wheel_H = r.ImGui_GetMouseWheel(ctx)
+			LT_Track = r.GetLastTouchedTrack()
 
-			MouseRightClick = reaper.ImGui_IsMouseClicked(ctx, 1)
-			NoScrolling = reaper.ImGui_WindowFlags_NoScrollbar()
+			MouseRightClick = r.ImGui_IsMouseClicked(ctx, 1)
+			NoScrolling = r.ImGui_WindowFlags_NoScrollbar()
 			AAAInitSliderInst = 1
 			LT_ParamValue = r.TrackFX_GetParamNormalized(LT_Track, LT_FX_Number, LT_ParamNum)
-			ModifierHeld = reaper.ImGui_GetKeyMods(ctx) -- 1-ctrl | 2-shift | 4-alt | 8-command
-			IsAnyMouseDown = reaper.ImGui_IsAnyMouseDown(ctx)
-			LBtn_MousdDownDuration = reaper.ImGui_GetMouseDownDuration(ctx, 0)
+			ModifierHeld = r.ImGui_GetKeyMods(ctx) -- 1-ctrl | 2-shift | 4-alt | 8-command
+			IsAnyMouseDown = r.ImGui_IsAnyMouseDown(ctx)
+			LBtn_MousdDownDuration = r.ImGui_GetMouseDownDuration(ctx, 0)
 			LBtnRel = r.ImGui_IsMouseReleased(ctx, 0)
 			RBtnRel = r.ImGui_IsMouseReleased(ctx, 1)
 			if IsLBtnClicked then
@@ -7484,8 +7484,8 @@ function loop()
 				Max_L_MouseDownDuration = math.max(LBtn_MousdDownDuration or -1, Max_L_MouseDownDuration or -1)
 			end
 
-			IsNum1Pressed = reaper.ImGui_IsKeyDown(ctx, 49)
-			IsRightBtnHeld = reaper.ImGui_IsMouseDown(ctx, 1)
+			IsNum1Pressed = r.ImGui_IsKeyDown(ctx, 49)
+			IsRightBtnHeld = r.ImGui_IsMouseDown(ctx, 1)
 			IsRBtnClicked = r.ImGui_IsMouseClicked(ctx, 1)
 
 			if IsNum1Pressed then
@@ -7495,7 +7495,7 @@ function loop()
 			-- if ShowKeyCode then
 			if ShowKeyCode then
 				for keynum = 0, 300, 1 do --
-					KeyDown = reaper.ImGui_IsKeyDown(ctx, keynum)
+					KeyDown = r.ImGui_IsKeyDown(ctx, keynum)
 					if KeyDown then
 						tooltip(tostring(keynum))
 					end
@@ -7503,19 +7503,19 @@ function loop()
 			end
 			IsLBtnClicked = r.ImGui_IsMouseClicked(ctx, 0)
 			LBtnClickCount = r.ImGui_GetMouseClickedCount(ctx, 0)
-			IsLBtnHeld = reaper.ImGui_IsMouseDown(ctx, 0)
+			IsLBtnHeld = r.ImGui_IsMouseDown(ctx, 0)
 			IsRBtnHeld = r.ImGui_IsMouseDown(ctx, 1)
-			Mods = reaper.ImGui_GetKeyMods(ctx) -- Alt = 4  shift =2  ctrl = 1  Command=8
+			Mods = r.ImGui_GetKeyMods(ctx) -- Alt = 4  shift =2  ctrl = 1  Command=8
 
 			-- end
 
 			----Colors & Font ------------
-			--[[ reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgHovered(), 0xaaaaaa44)
-                reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), 0x474747ff)
-                reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_Text(), 0x6e6e6eff) --Use Hex + FF in the end
-                reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_SliderGrab(), 0x808080ff)
-                reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgActive(), 0x808080ff) ]]
-			reaper.ImGui_PushFont(ctx, Font_Andale_Mono)
+			--[[ r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), 0xaaaaaa44)
+                r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), 0x474747ff)
+                r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), 0x6e6e6eff) --Use Hex + FF in the end
+                r.ImGui_PushStyleColor(ctx, r.ImGui_Col_SliderGrab(), 0x808080ff)
+                r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgActive(), 0x808080ff) ]]
+			r.ImGui_PushFont(ctx, Font_Andale_Mono)
 
 			------------------------------
 			------Menu Bar---------------
@@ -7547,7 +7547,7 @@ function loop()
 
 			if r.ImGui_Button(ctx, "Record Last Touch") then
 				GetLTParam()
-				local FX_Count = reaper.TrackFX_GetCount(LT_Track)
+				local FX_Count = r.TrackFX_GetCount(LT_Track)
 				local RptPrmFound
 				local F = FX[LT_FXGUID] or {}
 
@@ -7613,9 +7613,9 @@ function loop()
 
 			if RC and Cont_Param_Add_Mode == false then
 				Cont_Param_Add_Mode = true
-				--DeltaTime = reaper.ImGuif_GetDeltaTime(ctx)
+				--DeltaTime = r.ImGuif_GetDeltaTime(ctx)
 				TimeAfter_ContAdd = 0
-				deltatime = reaper.ImGui_GetTime(ctx)
+				deltatime = r.ImGui_GetTime(ctx)
 			end
 
 			if RC == true and Cont_Param_Add_Mode == true and TimeAfter_ContAdd > 10 then
@@ -7698,9 +7698,9 @@ function loop()
 				end
 			end
 
-			reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_HeaderHovered(), 0x373737ff)
+			r.ImGui_PushStyleColor(ctx, r.ImGui_Col_HeaderHovered(), 0x373737ff)
 
-			reaper.ImGui_TableHeadersRow(ctx) --create header row
+			r.ImGui_TableHeadersRow(ctx) --create header row
 			r.gmem_attach("ParamValues")
 			ModulatorR, ModulatorB = r.ImGui_GetItemRectMax(ctx)
 			Trk[TrkID] = Trk[TrkID] or {}
@@ -7711,11 +7711,11 @@ function loop()
 
 				Trk[TrkID].Mod[i] = Trk[TrkID].Mod[i] or {}
 				local I, Name, CurX = Trk[TrkID].Mod[i], nil, r.ImGui_GetCursorPosX(ctx)
-				local frameBgColor = reaper.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.5, 0.5, 0.2)
-				local frameBgHoveredColor = reaper.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.6, 0.5, 0.2)
-				local frameBgActiveColor = reaper.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.7, 0.5, 0.2)
-				local sliderGrabColor = reaper.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.9, 0.9, 0.2)
-				local sliderGrabActiveColor = reaper.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.9, 0.9, 0.8)
+				local frameBgColor = r.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.5, 0.5, 0.2)
+				local frameBgHoveredColor = r.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.6, 0.5, 0.2)
+				local frameBgActiveColor = r.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.7, 0.5, 0.2)
+				local sliderGrabColor = r.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.9, 0.9, 0.2)
+				local sliderGrabActiveColor = r.ImGui_ColorConvertHSVtoRGB((i - 1) / 7.0, 0.9, 0.9, 0.8)
 				r.ImGui_PushID(ctx, i)
 				local function PushClr(AssigningMacro)
 					r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), EightColors.LowMidSat[i])
@@ -7725,8 +7725,8 @@ function loop()
 					r.ImGui_PushStyleColor(ctx, r.ImGui_Col_SliderGrabActive(), EightColors.Bright_HighSat[i])
 
 					if AssigningMacro == i then
-						reaper.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), EightColors.HighSat_MidBright[i])
-						reaper.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), EightColors.bgWhenAsgnModAct[i])
+						r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), EightColors.HighSat_MidBright[i])
+						r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), EightColors.bgWhenAsgnModAct[i])
 						PopColorTime = 2
 					end
 					clrPop = 6
@@ -7745,22 +7745,22 @@ function loop()
 					r.ImGui_PushItemWidth(ctx, -FLT_MIN)
 
 					IsMacroSlidersEdited, I.Val =
-						reaper.ImGui_SliderDouble(ctx, i .. "##", I.Val, Slider1Min or 0, Slider1Max or 1)
+						r.ImGui_SliderDouble(ctx, i .. "##", I.Val, Slider1Min or 0, Slider1Max or 1)
 					IsMacroActive = r.ImGui_IsItemActive(ctx)
 					if IsMacroActive == true then
 						Mc.AnyActive = true
 					end
-					R_ClickOnMacroSliders = reaper.ImGui_IsItemClicked(ctx, 1)
+					R_ClickOnMacroSliders = r.ImGui_IsItemClicked(ctx, 1)
 					-- if r.ImGui_IsItemClicked( ctx,1) ==true and ModifierHeld==nil then R_ClickOnMacroSliders = true end
 					if r.ImGui_IsItemClicked(ctx, 1) == true and Mods == Ctrl then
 						r.ImGui_OpenPopup(ctx, "Macro" .. i .. "Menu")
 					end
 
 					--- Macro Label
-					reaper.ImGui_TableSetColumnIndex(ctx, MacroNums[i] * 2 - 1)
-					reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), EightColors.LowSat[i])
+					r.ImGui_TableSetColumnIndex(ctx, MacroNums[i] * 2 - 1)
+					r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), EightColors.LowSat[i])
 					r.ImGui_PushItemWidth(ctx, -FLT_MIN)
-					MacroNameEdited, I.Name = reaper.ImGui_InputText(ctx, "##", I.Name or "Macro " .. i)
+					MacroNameEdited, I.Name = r.ImGui_InputText(ctx, "##", I.Name or "Macro " .. i)
 					if MacroNameEdited then
 						r.GetSetMediaTrackInfo_String(LT_Track, "P_EXT: Macro" .. i .. "s Name" .. TrkID, I.Name, true)
 					end
@@ -7876,11 +7876,11 @@ function loop()
 					end
 					r.ImGui_TableSetColumnIndex(ctx, i * 2 - 1)
 					r.ImGui_PushItemWidth(ctx, -FLT_MIN)
-					reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), EightColors.LowSat[i])
+					r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), EightColors.LowSat[i])
 					if I.Name == "Macro " .. i then
 						I.Name = "Env " .. i
 					end
-					MacroNameEdited, I.Name = reaper.ImGui_InputText(ctx, "##", I.Name or "Env " .. i)
+					MacroNameEdited, I.Name = r.ImGui_InputText(ctx, "##", I.Name or "Env " .. i)
 					if MacroNameEdited then
 						r.GetSetMediaTrackInfo_String(LT_Track, "P_EXT: Macro" .. i .. "s Name" .. TrkID, I.Name, true)
 					end
@@ -8337,17 +8337,17 @@ function loop()
 				end
 
 				--check if there's envelope
-				--[[  IsThereEnvOnMacro[i] = reaper.GetFXEnvelope(LT_Track, 0, i-1, false)
+				--[[  IsThereEnvOnMacro[i] = r.GetFXEnvelope(LT_Track, 0, i-1, false)
                     Str_IsThereEnvOnMacro = tostring(IsThereEnvOnMacro[i])
                     if Str_IsThereEnvOnMacro ~= 'nil'  then     --if theres env on macros, Sync Macro on Gui to Actual Values
 
-                        Mc.Val_Trk[MacroValueLBL]= reaper.TrackFX_GetParamNormalized( LT_Track, 0, i-1  )
-                        PosX_Left, PosY_Top = reaper.ImGui_GetItemRectMin(ctx)
+                        Mc.Val_Trk[MacroValueLBL]= r.TrackFX_GetParamNormalized( LT_Track, 0, i-1  )
+                        PosX_Left, PosY_Top = r.ImGui_GetItemRectMin(ctx)
                         Array_Parameter.PosX_Left[i]=PosX_Left
                         Array_Parameter.PosY_Top[i]=PosY_Top
-                        drawlist=reaper.ImGui_GetForegroundDrawList(ctx)
+                        drawlist=r.ImGui_GetForegroundDrawList(ctx)
                         MacroColor= 'Macro'..i..'Color'
-                        reaper.ImGui_DrawList_AddCircleFilled(drawlist, Array_Parameter.PosX_Left[i], Array_Parameter.PosY_Top[i],4,_G[MacroColor])
+                        r.ImGui_DrawList_AddCircleFilled(drawlist, Array_Parameter.PosX_Left[i], Array_Parameter.PosY_Top[i],4,_G[MacroColor])
                     else IsThereEnvOnMacro[i]=0                                                                     
                     end ]]
 				if r.ImGui_BeginPopup(ctx, "Macro" .. i .. "Menu") then
@@ -8448,7 +8448,7 @@ function loop()
 
 			--[[ 
             r.gmem_attach('ParamValues')
-            TrkID= reaper.GetTrackGUID(LT_Track)
+            TrkID= r.GetTrackGUID(LT_Track)
 
             r.gmem_write(2 ,  PM.DIY_TrkID[TrkID])  ]]
 			if ImGUI_Time > 3 then
@@ -8550,7 +8550,7 @@ function loop()
 								| r.ImGui_WindowFlags_NoNav()
 						)
 					then
-						--HOVER_RECT = reaper.ImGui_IsWindowHovered(ctx,  reaper.ImGui_HoveredFlags_RectOnly())
+						--HOVER_RECT = r.ImGui_IsWindowHovered(ctx,  r.ImGui_HoveredFlags_RectOnly())
 						HoverOnWindow =
 							r.ImGui_IsWindowHovered(ctx, r.ImGui_HoveredFlags_AllowWhenBlockedByActiveItem())
 
@@ -8647,7 +8647,7 @@ function loop()
 								FX_Layr_Inst = 0
 								for F = 0, Sel_Track_FX_Count, 1 do
 									local FXGUID = r.TrackFX_GetFXGUID(LT_Track, F)
-									local _, FX_Name = reaper.TrackFX_GetFXName(LT_Track, F)
+									local _, FX_Name = r.TrackFX_GetFXName(LT_Track, F)
 									if string.find(FX_Name, "FXD Split to 32 Channels") ~= nil then
 										FX_Layr_Inst = FX_Layr_Inst + 1
 										Lyr.SpltrID[FX_Layr_Inst .. TrkID] = r.TrackFX_GetFXGUID(LT_Track, FX_Idx - 1)
@@ -8678,7 +8678,7 @@ function loop()
 								FX_Idx_OpenedPopup = nil
 								r.ImGui_CloseCurrentPopup(ctx)
 								if val & 4 ~= 0 then
-									reaper.SNM_SetIntConfigVar("fxfloat_focus", val | 4) -- re-enable Auto-float
+									r.SNM_SetIntConfigVar("fxfloat_focus", val | 4) -- re-enable Auto-float
 								end
 							elseif r.ImGui_Selectable(ctx, "Add Band Split") then
 								r.gmem_attach("FXD_BandSplit")
@@ -8705,7 +8705,7 @@ function loop()
 							Dvdr.Clr[ClrLbl] = 0x131313ff
 						end
 
-						reaper.ImGui_EndChildFrame(ctx)
+						r.ImGui_EndChildFrame(ctx)
 					end
 				end
 				r.ImGui_PopStyleColor(ctx)
@@ -9247,7 +9247,7 @@ function loop()
 								or DragFX_ID - lyrFxInst == FX_Idx
 							then
 								DontAllowDrop = true
-								reaper.ImGui_SameLine(ctx, nil, 0)
+								r.ImGui_SameLine(ctx, nil, 0)
 								Dvdr.Width[TblIdxForSpace] = 0
 								r.ImGui_EndDragDropTarget(ctx)
 
@@ -9286,7 +9286,7 @@ function loop()
 					else
 						Dvdr.Width[TblIdxForSpace] = 0
 						Dvdr.Clr[ClrLbl] = 0x131313ff
-						reaper.ImGui_SameLine(ctx, nil, 0)
+						r.ImGui_SameLine(ctx, nil, 0)
 					end
 					r.ImGui_SameLine(ctx, nil, 0)
 				end
@@ -9304,9 +9304,9 @@ function loop()
 				-- Move the Head of Container
 				if FX_Idx > Payload or (FX_Idx == RepeatTimeForWindows and AddLastSpace == "LastSpc") then
 					--table.insert(MovFX.FromPos,DragFX_ID) table.insert(MovFX.ToPos, FX_Idx-1)
-					reaper.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
+					r.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
 				elseif Payload > FX_Idx and FX_Idx ~= RepeatTimeForWindows then
-					reaper.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx, true)
+					r.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx, true)
 					--table.insert(MovFX.FromPos,DragFX_ID) table.insert(MovFX.ToPos, FX_Idx)
 				end
 
@@ -9318,17 +9318,17 @@ function loop()
 							if DropDest == nil then
 								DropDest = 0
 							end
-							local ID = reaper.TrackFX_GetFXGUID(LT_Track, DropDest)
+							local ID = r.TrackFX_GetFXGUID(LT_Track, DropDest)
 
 							if FX.InLyr[ID] == FXGUID_RackMixer or tablefind(FX[FXGUID[Payload]].FXsInBS, ID) then
 								if
 									FX_Idx > DropDest and FX_Idx ~= RepeatTimeForWindows
 									or (FX_Idx == RepeatTimeForWindows and AddLastSpace == "LastSpc")
 								then
-									reaper.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx - 2, true)
+									r.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx - 2, true)
 									--table.insert(MovFX.FromPos,DropDest) table.insert(MovFX.ToPos, FX_Idx-2)
 								elseif DropDest > FX_Idx and FX_Idx ~= RepeatTimeForWindows then
-									reaper.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx, true)
+									r.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx, true)
 									--table.insert(MovFX.FromPos,DropDest) table.insert(MovFX.ToPos, FX_Idx)
 								end
 							else
@@ -9338,9 +9338,9 @@ function loop()
 							if DropDest == nil then
 								DropDest = 1
 							end
-							local ID = reaper.TrackFX_GetFXGUID(LT_Track, DropDest)
+							local ID = r.TrackFX_GetFXGUID(LT_Track, DropDest)
 							if FX.InLyr[ID] == FXGUID_RackMixer or tablefind(FX[FXGUID[Payload]].FXsInBS, ID) then
-								reaper.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx, true)
+								r.TrackFX_CopyToTrack(LT_Track, DropDest, LT_Track, FX_Idx, true)
 								--table.insert(MovFX.FromPos,DropDest) table.insert(MovFX.ToPos, FX_Idx)
 
 								DropDest = DropDest + 1
@@ -9352,17 +9352,17 @@ function loop()
 				elseif Payload_Type == "BS_Drag" then
 					for i, v in ipairs(FX[FXGUID[Payload]].FXsInBS) do
 						if FX_Idx > Payload or (FX_Idx == RepeatTimeForWindows and AddLastSpace == "LastSpc") then
-							reaper.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
+							r.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
 						elseif Payload > FX_Idx and FX_Idx ~= RepeatTimeForWindows then
-							reaper.TrackFX_CopyToTrack(LT_Track, Payload + i, LT_Track, FX_Idx + i, true)
+							r.TrackFX_CopyToTrack(LT_Track, Payload + i, LT_Track, FX_Idx + i, true)
 						end
 					end
 
 					--Move Joiner
 					if FX_Idx > Payload or (FX_Idx == RepeatTimeForWindows and AddLastSpace == "LastSpc") then
-						reaper.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
+						r.TrackFX_CopyToTrack(LT_Track, Payload, LT_Track, FX_Idx - 1, true)
 					elseif Payload > FX_Idx and FX_Idx ~= RepeatTimeForWindows then
-						reaper.TrackFX_CopyToTrack(
+						r.TrackFX_CopyToTrack(
 							LT_Track,
 							Payload + #FX[FXGUID[Payload]].FXsInBS + 1,
 							LT_Track,
@@ -9373,7 +9373,7 @@ function loop()
 				end
 				if Payload_Type == "FX Layer Repositioning" then
 					for i = 0, FX_Count, 1 do -- Move Splitter
-						local FXGUID = reaper.TrackFX_GetFXGUID(LT_Track, i)
+						local FXGUID = r.TrackFX_GetFXGUID(LT_Track, i)
 
 						if Lyr.SplitrAttachTo[FXGUID] == FXGUID_RackMixer then
 							SplitrGUID = FXGUID
@@ -9405,11 +9405,11 @@ function loop()
 
 			RepeatTimeForWindows = Sel_Track_FX_Count
 
-			MaxX, MaxY = reaper.ImGui_GetContentRegionMax(ctx)
-			framepadding = reaper.ImGui_StyleVar_FramePadding()
-			BorderSize = reaper.ImGui_StyleVar_FrameBorderSize()
-			FrameRounding = reaper.ImGui_StyleVar_FrameRounding()
-			BtnTxtAlign = reaper.ImGui_StyleVar_ButtonTextAlign()
+			MaxX, MaxY = r.ImGui_GetContentRegionMax(ctx)
+			framepadding = r.ImGui_StyleVar_FramePadding()
+			BorderSize = r.ImGui_StyleVar_FrameBorderSize()
+			FrameRounding = r.ImGui_StyleVar_FrameRounding()
+			BtnTxtAlign = r.ImGui_StyleVar_ButtonTextAlign()
 
 			r.ImGui_PushStyleVar(ctx, framepadding, 0, 3) --StyleVar#1 (Child Frame for all FX Devices)
 			--r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), 0x121212ff)
@@ -9450,7 +9450,7 @@ function loop()
 			Trk[TrkID] = Trk[TrkID] or {}
 			Trk[TrkID].PreFX = Trk[TrkID].PreFX or {}
 
-			r.ImGui_PushStyleVar(ctx, reaper.ImGui_StyleVar_ChildBorderSize(), 0)
+			r.ImGui_PushStyleVar(ctx, r.ImGui_StyleVar_ChildBorderSize(), 0)
 			Cx_LeftEdge, Cy_BeforeFXdevices = r.ImGui_GetCursorScreenPos(ctx)
 			MouseAtLeftEdge = r.ImGui_IsMouseHoveringRect(
 				ctx,
@@ -9644,7 +9644,7 @@ function loop()
 
 					local FxGUID = FXGUID[FX_Idx]
 					FX.Win_Name[FX_Idx] = FX_Name
-					focusedFXState, trackNumOfFocusFX, _, FX_Index_FocusFX = reaper.GetFocusedFX2()
+					focusedFXState, trackNumOfFocusFX, _, FX_Index_FocusFX = r.GetFocusedFX2()
 
 					if FXGUID[FX_Idx] then
 						FX[FxGUID] = FX[FxGUID] or {}
@@ -9657,7 +9657,7 @@ function loop()
 						return RV
 					end
 
-					FXGUID_To_Check_If_InLayer = reaper.TrackFX_GetFXGUID(LT_Track, FX_Idx)
+					FXGUID_To_Check_If_InLayer = r.TrackFX_GetFXGUID(LT_Track, FX_Idx)
 
 					if not tablefind(Trk[TrkID].PostFX, FxGUID) and FXGUID[FX_Idx] ~= FXGUID[FX_Idx - 1] then
 						if
@@ -9702,7 +9702,7 @@ function loop()
 						then
 							r.ImGui_BeginGroup(ctx)
 
-							FX.Enable[FX_Idx] = reaper.TrackFX_GetEnabled(LT_Track, FX_Idx)
+							FX.Enable[FX_Idx] = r.TrackFX_GetEnabled(LT_Track, FX_Idx)
 							local _, FX_Name = r.TrackFX_GetFXName(LT_Track, FX_Idx)
 							local FxGUID = FXGUID[FX_Idx]
 							local FxNameS = FX.Win_Name_S[FX_Idx]
@@ -10301,7 +10301,7 @@ function loop()
 														Draw.Df_EdgeRound[FxGUID] or 0
 													)
 												elseif Draw.Type == "circle" then
-													reaper.ImGui_DrawList_AddCircle(
+													r.ImGui_DrawList_AddCircle(
 														WDL,
 														MsX_Start,
 														MsY_Start,
@@ -10625,10 +10625,10 @@ function loop()
 									end
 
 									if FX.Enable[FX_Idx] == nil then
-										FX.Enable[FX_Idx] = reaper.TrackFX_GetEnabled(LT_Track, FX_Idx)
+										FX.Enable[FX_Idx] = r.TrackFX_GetEnabled(LT_Track, FX_Idx)
 									end
 
-									reaper.ImGui_SameLine(ctx, nil, 0)
+									r.ImGui_SameLine(ctx, nil, 0)
 									if FX.LayEdit == FxGUID and Draw.DrawMode[FxGUID] ~= true then
 										r.ImGui_BeginDisabled(ctx)
 										R, T = r.ImGui_GetItemRectMax(ctx)
@@ -10660,14 +10660,14 @@ function loop()
 									if FX[FxGUID].Collapse ~= true then
 										if string.find(FX_Name, "Pro Q 3") ~= nil then
 											WindowBtn = r.ImGui_Button(ctx, "Pro-Q 3" .. "##", 60, 20) -- create window name button
-											ProQ_TitlePosX_L, ProQ_TitlePosY_T = reaper.ImGui_GetItemRectMin(ctx)
-											ProQ_TitlePosX_R, ProQ_TitlePosY_B = reaper.ImGui_GetItemRectMax(ctx)
+											ProQ_TitlePosX_L, ProQ_TitlePosY_T = r.ImGui_GetItemRectMin(ctx)
+											ProQ_TitlePosX_R, ProQ_TitlePosY_B = r.ImGui_GetItemRectMax(ctx)
 										elseif string.find(FX_Name, "Pro C 2") ~= nil then
-											WindowBtn = reaper.ImGui_Button(ctx, "Pro-C 2" .. "##", 60, 20) -- create window name button
+											WindowBtn = r.ImGui_Button(ctx, "Pro-C 2" .. "##", 60, 20) -- create window name button
 										else
 											if DebugMode then
 												FX.Win_Name[FX_Idx] = FxGUID
-												WindowBtn = reaper.ImGui_Button(
+												WindowBtn = r.ImGui_Button(
 													ctx,
 													FxGUID .. "## ",
 													FX.TitleWidth[FxGUID] or DefaultWidth - 30,
@@ -10733,7 +10733,7 @@ function loop()
 										--if Name:find('FabFilter Pro%-C 2')  then Name = 'Pro|C 2' end
 										local Name_V = Name:gsub("(.)", "%1\n")
 										local Name_V_NoManuFacturer = Name_V:gsub("%b()", "")
-										reaper.ImGui_PushStyleVar(ctx, BtnTxtAlign, 0.5, 0.2) --StyleVar#3
+										r.ImGui_PushStyleVar(ctx, BtnTxtAlign, 0.5, 0.2) --StyleVar#3
 										r.ImGui_SameLine(ctx, nil, 0)
 
 										WindowBtn = r.ImGui_Button(ctx, Name_V_NoManuFacturer, 25, 220)
@@ -10941,7 +10941,7 @@ function loop()
 												local PrmCount = r.TrackFX_GetNumParams(LT_Track, FX_Idx)
 												for i = 0, PrmCount - 4, 1 do
 													local Prm_Val, minval, maxval =
-														reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, i)
+														r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, i)
 													FX[FxGUID].MorphA[i] = Prm_Val
 													r.GetSetMediaTrackInfo_String(
 														LT_Track,
@@ -11013,7 +11013,7 @@ function loop()
 
 										if r.ImGui_Button(ctx, "Save all values as default", -FLT_MIN) then
 											local dir_path = ConcatPath(
-												reaper.GetResourcePath(),
+												r.GetResourcePath(),
 												"Scripts",
 												"ReaTeam Scripts",
 												"FX",
@@ -11149,7 +11149,7 @@ function loop()
 													r.ImGui_TextFilter_Draw(Filter, ctx, "##", -1 - (SpaceForBtn or 0))
 												then
 													FilterTxt = r.ImGui_TextFilter_Get(Filter)
-													reaper.ImGui_TextFilter_Set(Filter, Txt)
+													r.ImGui_TextFilter_Set(Filter, Txt)
 												end
 												if FilterTxt then
 													SL()
@@ -11651,9 +11651,9 @@ function loop()
 
 										if SyncWetValues == true then
 											Wet.P_Num[FX_Idx] =
-												reaper.TrackFX_GetParamFromIdent(LT_Track, FX_Idx, ":wet")
+												r.TrackFX_GetParamFromIdent(LT_Track, FX_Idx, ":wet")
 											Wet.Get =
-												reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, Wet.P_Num[FX_Idx])
+												r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, Wet.P_Num[FX_Idx])
 											Wet.Val[FX_Idx] = Wet.Get
 										end
 										if SyncWetValues == true and FX_Idx == Sel_Track_FX_Count - 1 then
@@ -11661,7 +11661,7 @@ function loop()
 										end
 										if LT_ParamNum == Wet.P_Num[FX_Idx] and focusedFXState == 1 then
 											Wet.Get =
-												reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, Wet.P_Num[FX_Idx])
+												r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, Wet.P_Num[FX_Idx])
 											Wet.Val[FX_Idx] = Wet.Get
 										elseif LT_ParamNum == FX[FxGUID].DeltaP then
 											FX[FxGUID].DeltaP_V =
@@ -11820,7 +11820,7 @@ function loop()
 												r.ImGui_CloseCurrentPopup(ctx)
 											end
 
-											reaper.ImGui_EndPopup(ctx)
+											r.ImGui_EndPopup(ctx)
 										end
 										if ProQ3["scale" .. " ID" .. FXGUID[FX_Idx]] == 1 then
 											ProQ3["scaleLabel" .. " ID" .. FXGUID[FX_Idx]] = 30
@@ -11867,7 +11867,7 @@ function loop()
 											--r.ImGui_SameLine(ctx)
 											--AddDrag(ctx,'##'..12,  Trk.Prm.V[F_Tp(12,FXGUID[FX_Idx])..TrkID] or '', Trk.Prm.V[F_Tp(12,FXGUID[FX_Idx])..TrkID] or 0, 0, 1, 12,FX_Idx, 34, 'style', 10)
 
-											reaper.ImGui_PopFont(ctx)
+											r.ImGui_PopFont(ctx)
 											r.ImGui_SameLine(ctx, ProC.Width - 25)
 
 											SyncWetValues()
@@ -11891,16 +11891,16 @@ function loop()
 										--_, foo = AddKnob(ctx, 'test', foo or 0  , 0, 100 )
 										if FX.Enable[FX_Idx] == true then
 											-- Params Colors-----
-											--[[ reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), 0x32403aff)
-                                            reaper.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgActive(), 0x44444488)
+											--[[ r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), 0x32403aff)
+                                            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgActive(), 0x44444488)
 
                                             times = 2 ]]
 										else
-											--[[ r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBg(), 0x17171744)
+											--[[ r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBg(), 0x17171744)
                                             r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), 0x66666644)
                                             r.ImGui_PushStyleColor(ctx, r.ImGui_Col_SliderGrab(), 0x66666644)
-                                            r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgActive(), 0x66666622)
-                                            r.ImGui_PushStyleColor(ctx, reaper.ImGui_Col_FrameBgHovered(), 0x44444422)
+                                            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgActive(), 0x66666622)
+                                            r.ImGui_PushStyleColor(ctx, r.ImGui_Col_FrameBgHovered(), 0x44444422)
                                             times = 5 ]]
 										end
 
@@ -12612,7 +12612,7 @@ function loop()
 											r.ImGui_PushStyleVar(ctx, r.ImGui_StyleVar_GrabMinSize(), 0)
 											r.ImGui_PushFont(ctx, Font_Andale_Mono_10)
 											IIS = 2
-											reaper.gmem_attach("CompReductionScope")
+											r.gmem_attach("CompReductionScope")
 											local SpX, SpY = r.ImGui_GetCursorScreenPos(ctx)
 											local SpY = SpY - 9
 											local C = SpY + 50
@@ -12642,7 +12642,7 @@ function loop()
 											then
 												r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Header(), 0x44444433)
 												local AccentClr =
-													reaper.ImGui_GetColor(ctx, reaper.ImGui_Col_SliderGrabActive())
+													r.ImGui_GetColor(ctx, r.ImGui_Col_SliderGrabActive())
 												r.ImGui_PushStyleColor(ctx, r.ImGui_Col_HeaderHovered(), AccentClr)
 												r.ImGui_PushStyleColor(ctx, r.ImGui_Col_Text(), 0xbbbbbbff)
 
@@ -12662,7 +12662,7 @@ function loop()
 												r.ImGui_EndCombo(ctx)
 												local L, T = r.ImGui_GetItemRectMin(ctx)
 												local R, B = r.ImGui_GetItemRectMax(ctx)
-												local lineheight = reaper.ImGui_GetTextLineHeight(ctx)
+												local lineheight = r.ImGui_GetTextLineHeight(ctx)
 												local drawlist = r.ImGui_GetForegroundDrawList(ctx)
 
 												r.ImGui_DrawList_AddRectFilled(
@@ -12756,7 +12756,7 @@ function loop()
 													0x88888810,
 													nil
 												)
-												local AnyActive = reaper.ImGui_IsAnyItemActive(ctx)
+												local AnyActive = r.ImGui_IsAnyItemActive(ctx)
 
 												if IsLBtnClicked and AnyActive == false and not ProC.ChoosingStyle then
 													r.ImGui_DrawList_AddRectFilled(
@@ -12936,7 +12936,7 @@ function loop()
 											local Fx_P = 1
 											--for i=1, 13, 1 do FX[FxGUID][i]=FX[FxGUID][i] or {} end
 
-											reaper.ImGui_Indent(ctx, 210)
+											r.ImGui_Indent(ctx, 210)
 											AddKnob(
 												ctx,
 												"##Gain",
@@ -13187,7 +13187,7 @@ function loop()
 											-------- End of Meter
 
 											r.ImGui_Unindent(ctx, 210)
-											reaper.ImGui_Indent(ctx, 5)
+											r.ImGui_Indent(ctx, 5)
 
 											AddKnob(
 												ctx,
@@ -13452,8 +13452,8 @@ function loop()
 											local ShelfGain_Node = 0
 											local Q_Node = {}
 											local E = 2.71828182845904523
-											ProQ_Xpos_L, ProQ_Ypos_T = reaper.ImGui_GetItemRectMin(ctx)
-											ProQ_Xpos_R, ProQ_Ypos_B = reaper.ImGui_GetItemRectMax(ctx)
+											ProQ_Xpos_L, ProQ_Ypos_T = r.ImGui_GetItemRectMin(ctx)
+											ProQ_Xpos_R, ProQ_Ypos_B = r.ImGui_GetItemRectMax(ctx)
 											--ProQ_Ypos_B= ProQ_Ypos_T+340
 											local B = ProQ_Ypos_B + 340
 											floor = -80
@@ -13722,7 +13722,7 @@ function loop()
 															FillClr_LT_Band(i, Y_Mid)
 														end
 
-														reaper.ImGui_DrawList_PathFillConvex(Foreground, 0xffffffff)
+														r.ImGui_DrawList_PathFillConvex(Foreground, 0xffffffff)
 													end
 												elseif
 													ProQ3.Band_UseState[Band] == 1.0
@@ -14598,7 +14598,7 @@ function loop()
 														)
 														if Wheel_V ~= 0 then --if wheel is moved
 															HoverOnScrollItem = true
-															MousePosX_AdjustingQ, Y = reaper.GetMousePosition()
+															MousePosX_AdjustingQ, Y = r.GetMousePosition()
 															ProQ3["AdjustingQ" .. FXGUID[FX_Idx]] = true
 															BandforQadjusting = Band
 														end
@@ -14646,7 +14646,7 @@ function loop()
 
 													if ProQ3["AdjustingQ" .. FXGUID[FX_Idx]] then
 														local MousePosX_AdjustingQ_CheckXpos, Y =
-															reaper.GetMousePosition()
+															r.GetMousePosition()
 														if ModifierHeld == Shift then
 															WheelQFineAdj = 20
 														else
@@ -14781,11 +14781,11 @@ function loop()
 													if LT_ParamNum ~= nil then
 														local m = m
 														_, tracknumber, fxnumber, paramnumber =
-															reaper.GetLastTouchedFX()
-														proQ_LT_GUID = reaper.TrackFX_GetFXGUID(LT_Track, fxnumber)
+															r.GetLastTouchedFX()
+														proQ_LT_GUID = r.TrackFX_GetFXGUID(LT_Track, fxnumber)
 
 														for i = 1, RepeatTimeForWindows, 1 do
-															GUIDtoCompare = reaper.TrackFX_GetFXGUID(LT_Track, fxnumber)
+															GUIDtoCompare = r.TrackFX_GetFXGUID(LT_Track, fxnumber)
 															if
 																proQ_LT_GUID == GUIDtoCompare
 																and proQ_LT_GUID ~= nil
@@ -14922,7 +14922,7 @@ function loop()
 													r.TrackFX_SetParam(LT_Track, FX_Idx, 13 * (LTBand - 1) + 8, 1)
 													r.ImGui_CloseCurrentPopup(ctx)
 												end
-												reaper.ImGui_EndPopup(ctx)
+												r.ImGui_EndPopup(ctx)
 											end
 
 											------------------------------------------
@@ -14943,16 +14943,16 @@ function loop()
 														end
 														Band = Band + 1
 													end
-													reaper.TrackFX_SetParamNormalized(
+													r.TrackFX_SetParamNormalized(
 														LT_Track,
 														FX_Idx,
 														13 * (BandNotInUse - 1),
 														1
 													)
-													MouseX_AddNode, MouseY_AddNode = reaper.ImGui_GetMousePos(ctx)
+													MouseX_AddNode, MouseY_AddNode = r.ImGui_GetMousePos(ctx)
 
 													local FreqToAddNode = (MouseX_AddNode - ProQ_Xpos_L) / ProQ3.Width
-													reaper.TrackFX_SetParamNormalized(
+													r.TrackFX_SetParamNormalized(
 														LT_Track,
 														FX_Idx,
 														13 * (BandNotInUse - 1) + 2,
@@ -14963,28 +14963,28 @@ function loop()
 															/ ProQ3["scale" .. " ID" .. FXGUID[FX_Idx]]
 														+ 1
 													) / 2
-													reaper.TrackFX_SetParamNormalized(
+													r.TrackFX_SetParamNormalized(
 														LT_Track,
 														FX_Idx,
 														13 * (BandNotInUse - 1) + 3,
 														GainToAddNode
 													)
 													if FreqToAddNode > 0.9 then
-														reaper.TrackFX_SetParamNormalized(
+														r.TrackFX_SetParamNormalized(
 															LT_Track,
 															FX_Idx,
 															13 * (BandNotInUse - 1) + 8,
 															0.5
 														)
 													elseif FreqToAddNode < 0.1 then
-														reaper.TrackFX_SetParamNormalized(
+														r.TrackFX_SetParamNormalized(
 															LT_Track,
 															FX_Idx,
 															13 * (BandNotInUse - 1) + 8,
 															0.25
 														)
 													else
-														reaper.TrackFX_SetParamNormalized(
+														r.TrackFX_SetParamNormalized(
 															LT_Track,
 															FX_Idx,
 															13 * (BandNotInUse - 1) + 8,
@@ -15003,13 +15003,13 @@ function loop()
 											r.ImGui_EndChildFrame(ctx)
 										end ---- End of if begin pro-Q frame then
 
-										ProQ3["HvrGUI" .. FXGUID[FX_Idx]] = reaper.ImGui_IsItemHovered(ctx)
+										ProQ3["HvrGUI" .. FXGUID[FX_Idx]] = r.ImGui_IsItemHovered(ctx)
 										--if ProQ3['HvrGUI'..FXGUID[FX_Idx]] then FX_DeviceWindow_NoScroll= 0--[[ r.ImGui_WindowFlags_NoScrollWithMouse() ]] end
 
 										r.ImGui_PopStyleColor(ctx, 1)
 
 										if FX.Enable[FX_Idx] == false then
-											local drawlist = reaper.ImGui_GetForegroundDrawList(ctx)
+											local drawlist = r.ImGui_GetForegroundDrawList(ctx)
 											r.ImGui_DrawList_AddRectFilled(
 												drawlist,
 												ProQ_Xpos_L,
@@ -15106,8 +15106,8 @@ function loop()
 
 							--------------------FX Devices--------------------
 
-							reaper.ImGui_PopStyleColor(ctx, poptimes) -- -- PopColor #1 FX Window
-							reaper.ImGui_SameLine(ctx, nil, 0)
+							r.ImGui_PopStyleColor(ctx, poptimes) -- -- PopColor #1 FX Window
+							r.ImGui_SameLine(ctx, nil, 0)
 
 							r.ImGui_EndGroup(ctx)
 						end
@@ -15252,7 +15252,7 @@ function loop()
 												D.clr[Draw.SelItm] or 0xffffffff,
 												r.ImGui_ColorEditFlags_NoInputs()
 													| r.ImGui_ColorEditFlags_AlphaPreviewHalf()
-													| reaper.ImGui_ColorEditFlags_AlphaBar()
+													| r.ImGui_ColorEditFlags_AlphaBar()
 											)
 										else
 											clrpick, Draw.clr = r.ImGui_ColorEdit4(
@@ -15261,7 +15261,7 @@ function loop()
 												Draw.clr or 0xffffffff,
 												r.ImGui_ColorEditFlags_NoInputs()
 													| r.ImGui_ColorEditFlags_AlphaPreviewHalf()
-													| reaper.ImGui_ColorEditFlags_AlphaBar()
+													| r.ImGui_ColorEditFlags_AlphaBar()
 											)
 										end
 										r.ImGui_Text(ctx, "Default edge rounding :")
@@ -16109,7 +16109,7 @@ function loop()
 										FrstSelItm.BgClr or r.ImGui_GetColor(ctx, r.ImGui_Col_FrameBg()),
 										r.ImGui_ColorEditFlags_NoInputs()
 											| r.ImGui_ColorEditFlags_AlphaPreviewHalf()
-											| reaper.ImGui_ColorEditFlags_AlphaBar()
+											| r.ImGui_ColorEditFlags_AlphaBar()
 									)
 									if
 										not FX[FxGUID][LE.Sel_Items[1]].BgClr
@@ -16133,7 +16133,7 @@ function loop()
 											FrstSelItm.GrbClr or r.ImGui_GetColor(ctx, r.ImGui_Col_SliderGrab()),
 											r.ImGui_ColorEditFlags_NoInputs()
 												| r.ImGui_ColorEditFlags_AlphaPreviewHalf()
-												| reaper.ImGui_ColorEditFlags_AlphaBar()
+												| r.ImGui_ColorEditFlags_AlphaBar()
 										)
 										if
 											not FX[FxGUID][LE.Sel_Items[1]].GrbClr
@@ -16861,7 +16861,7 @@ function loop()
 								local clrhdr = r.ImGui_GetColor(ctx, r.ImGui_Col_Button())
 								r.ImGui_PushStyleColor(ctx, r.ImGui_Col_TableHeaderBg(), clrhdr)
 
-								r.ImGui_PushStyleVar(ctx, reaper.ImGui_StyleVar_FramePadding(), 0, 0)
+								r.ImGui_PushStyleVar(ctx, r.ImGui_StyleVar_FramePadding(), 0, 0)
 
 								r.ImGui_BeginTable(ctx, "##FX Layer" .. FX_Idx, 1)
 								r.ImGui_TableHeadersRow(ctx)
@@ -17065,14 +17065,14 @@ function loop()
 								for LayerNum, LyrID in pairs(FX[FxGUID].LyrID) do
 									if Lyr.Solo[LyrID .. FxGUID] == nil then
 										Lyr.Solo[LyrID .. FxGUID] =
-											reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 4 + (5 * (LyrID - 1)))
+											r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 4 + (5 * (LyrID - 1)))
 									end
 									if Lyr.Solo[LyrID .. FxGUID] == 1 then
 										FX[FxGUID].AnySoloChan = true
 									end
 									if Lyr.Mute[LyrID .. FxGUID] == nil then
 										Lyr.Mute[LyrID .. FxGUID] =
-											reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
+											r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
 									end
 									if Lyr.Mute[LyrID .. FxGUID] == 1 then
 										FX[FxGUID].AnyMuteChan = true
@@ -17265,7 +17265,7 @@ function loop()
 												end
 											end
 											FXLayerRenaming = true
-											reaper.ImGui_SetKeyboardFocusHere(ctx)
+											r.ImGui_SetKeyboardFocusHere(ctx)
 											r.ImGui_SetNextItemWidth(ctx, FXLayeringWin_X - BtnSizeManual * 3 - 23)
 											local ID = FX[FxGUID].LyrID[LyrID]
 											FX[FxGUID].LyrTitle = FX[FxGUID].LyrTitle or {}
@@ -17429,7 +17429,7 @@ function loop()
 										)
 										r.ImGui_SameLine(ctx, nil, 10)
 
-										if LBtnDC and reaper.ImGui_IsItemClicked(ctx, 0) then
+										if LBtnDC and r.ImGui_IsItemClicked(ctx, 0) then
 											FX[FxGUID][Fx_P_Knob].V = 0.5
 											local rv = r.TrackFX_SetParamNormalized(LT_Track, FX_Idx, P_Num, 0.5)
 										end
@@ -17453,7 +17453,7 @@ function loop()
 										end
 
 										if ClickOnSolo then
-											Lyr.Solo[LyrID .. FxGUID] = reaper.TrackFX_GetParamNormalized(
+											Lyr.Solo[LyrID .. FxGUID] = r.TrackFX_GetParamNormalized(
 												LT_Track,
 												FX_Idx,
 												4 + (5 * (LyrID - 1))
@@ -17479,7 +17479,7 @@ function loop()
 											end
 										end
 										if Lyr.Solo[LyrID .. FxGUID] == nil then
-											Lyr.Solo[LyrID .. FxGUID] = reaper.TrackFX_GetParamNormalized(
+											Lyr.Solo[LyrID .. FxGUID] = r.TrackFX_GetParamNormalized(
 												LT_Track,
 												FX_Idx,
 												4 + (5 * (LyrID - 1))
@@ -17503,15 +17503,15 @@ function loop()
 
 										if Lyr.Mute[LyrID .. FxGUID] == nil then
 											Lyr.Mute[LyrID .. FxGUID] =
-												reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
+												r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
 										end
 
 										if ClickOnMute then
 											Lyr.Mute[LyrID .. FxGUID] =
-												reaper.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
+												r.TrackFX_GetParamNormalized(LT_Track, FX_Idx, 5 * (LyrID - 1))
 											if Lyr.Mute[LyrID .. FxGUID] == 1 then
 												Lyr.Mute[LyrID .. FxGUID] = 0
-												reaper.TrackFX_SetParamNormalized(
+												r.TrackFX_SetParamNormalized(
 													LT_Track,
 													FX_Idx,
 													5 * (LyrID - 1),
@@ -17610,7 +17610,7 @@ function loop()
 								local DL = r.ImGui_GetWindowDrawList(ctx)
 								local title = (FX[FxGUID].ContainerTitle or "FX Layering"):gsub("(.)", "%1\n")
 
-								WindowBtnVertical = reaper.ImGui_Button(ctx, title .. "##Vertical", 25, 220) -- create window name button
+								WindowBtnVertical = r.ImGui_Button(ctx, title .. "##Vertical", 25, 220) -- create window name button
 								if WindowBtnVertical and Mods == 0 then
 								elseif WindowBtnVertical == true and Mods == Shift then
 									ToggleBypassFX()
@@ -17671,7 +17671,7 @@ function loop()
 											r.ImGui_SameLine(ctx, nil, 0)
 
 											AddSpaceBtwnFXs(FX_Idx_InLayer, false, nil, LyrID)
-											Xpos_Left, Ypos_Top = reaper.ImGui_GetItemRectMin(ctx)
+											Xpos_Left, Ypos_Top = r.ImGui_GetItemRectMin(ctx)
 											r.ImGui_SameLine(ctx, nil, 0)
 											if not FindStringInTable(BlackListFXs, FX.Win_Name[FX_Idx_InLayer]) then
 												createFXWindow(FX_Idx_InLayer)
@@ -17728,8 +17728,8 @@ function loop()
 
 								AddSpaceBtwnFXs(FX_Idx, nil, nil, Sel_LyrID)
 								AddLastSPCinRack = false
-								Xpos_Right, Ypos_Btm = reaper.ImGui_GetItemRectMax(ctx)
-								Xpos_Left, Ypos_Top = reaper.ImGui_GetItemRectMin(ctx)
+								Xpos_Right, Ypos_Btm = r.ImGui_GetItemRectMax(ctx)
+								Xpos_Left, Ypos_Top = r.ImGui_GetItemRectMin(ctx)
 
 								local TheresFXinLyr
 								for FX_Idx = 1, Sel_Track_FX_Count - 1, 1 do
@@ -19748,7 +19748,7 @@ function loop()
 
 			r.ImGui_PopFont(ctx)
 			--r.ImGui_PopStyleColor(ctx,Clr.poptimes)
-			Track_Fetch_At_End = reaper.GetLastTouchedTrack()
+			Track_Fetch_At_End = r.GetLastTouchedTrack()
 			TrkID_End = r.GetTrackGUID(Track_Fetch_At_End)
 
 			FirstLoop = false
@@ -19777,7 +19777,7 @@ function loop()
 	end --end for Visible
 
 	if open then
-		reaper.defer(loop)
+		r.defer(loop)
 	else --on script close
 		NumOfTotalTracks = r.GetNumTracks()
 		for T = 0, NumOfTotalTracks - 1, 1 do
@@ -19791,8 +19791,8 @@ function loop()
 		end
 		r.ImGui_DestroyContext(ctx)
 	end
-	Track_Fetch_At_End = reaper.GetLastTouchedTrack()
+	Track_Fetch_At_End = r.GetLastTouchedTrack()
 	waitForGmem = waitForGmem + 1
 end --end for loop
 
-reaper.defer(loop)
+r.defer(loop)
