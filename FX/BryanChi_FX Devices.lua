@@ -8434,7 +8434,7 @@ function loop()
                                                 else table.insert (D.R , Win_MsX)
                                                 end
 
-                                                table.insert (D.L, Win_MsX_Start); table.insert (D.T,Win_MsY_Start) ; ;table.insert (D.Type, Draw.Type)
+                                                table.insert (D.L, Win_MsX_Start); table.insert (D.T,Win_MsY_Start) ; table.insert (D.Type, Draw.Type)
                                                 table.insert(D.B, Win_MsY) table.insert(D.clr,Draw.clr or 0xffffffff )
                                             end
                                         end
